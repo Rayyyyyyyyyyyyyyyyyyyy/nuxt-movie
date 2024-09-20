@@ -3,9 +3,7 @@ import TheHeader from "~/components/theHeader.vue";
 </script>
 
 <template>
-  <div>Page: index</div>
-
-  <the-header></the-header>
+  <TheHeader />
 </template>
 
 <style scoped></style>

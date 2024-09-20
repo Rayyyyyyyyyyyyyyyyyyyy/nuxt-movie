@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    Component: header
+    Component: TheHeader
   </div>
 </template>
 
