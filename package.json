@@ -15,8 +15,10 @@
   "dependencies": {
     "@nuxt/eslint": "^0.5.7",
     "@pinia/nuxt": "^0.5.4",
+    "@types/aos": "^3.0.7",
     "element-plus": "^2.8.3",
     "nuxt": "^3.13.0",
+    "nuxt-aos": "^1.2.5",
     "vue": "latest",
     "vue-router": "latest"
   },
