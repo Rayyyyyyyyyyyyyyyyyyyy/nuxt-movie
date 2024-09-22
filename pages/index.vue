@@ -1,20 +1,23 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="container">
-    <h1 data-aos="fade-left" data-aos-delay="500">这个标题会向上淡入</h1>
+  <div class="page-wrapper">
+    <div class="aside bg-white">1</div>
+    <div class="aside bg-primary/20">2</div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.container {
-  @apply w-full h-full;
-  @apply p-4 mx-auto overflow-x-auto overflow-y-auto;
-  max-height: 100vh;
-  @apply bg-primary-light;
+.page-wrapper {
+  @apply w-full h-screen;
+  @apply mx-auto overflow-x-auto overflow-y-auto;
+  max-height: calc(100vh - 80px);
+  max-width: 100vw;
+  @apply flex;
 
-  .position_parents {
-    @apply relative;
+  .aside {
+    @apply flex-1 h-full;
+    @apply p-10;
   }
 }
 </style>
