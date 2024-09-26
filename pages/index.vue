@@ -1,45 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const config = useRuntimeConfig();
+// const { data, pending, error } = await useFetch(
+//   `https://api.themoviedb.org/3/movie/popular?api_key=${config.public.tmdbApiKey}`,
+//   {
+//     params: {
+//       language: "zh-CN", // 语言参数
+//       page: 1, // 页面参数
+//     },
+//   },
+// );
+</script>
 
 <template>
   <div class="page-wrapper">
-    <div class="aside aside-context" data-aos="flip-up">
-      <div class="my-nane">Gordon</div>
-      <div class="title">Front-end engineer</div>
-
-      <el-button class="work-btn">See my work</el-button>
-    </div>
-    <div class="aside bg-primary/20 ondui" data-aos="zoom-out"></div>
+    <!--    <div>-->
+    <!--      <div v-if="pending">Loading...</div>-->
+    <!--      <div v-if="error">Error: {{ error.message }}</div>-->
+    <!--      <div v-if="data">-->
+    <!--        <h1>Popular Movies</h1>-->
+    <!--        <ul>-->
+    <!--          <li v-for="movie in data.results" :key="movie.id">-->
+    <!--            {{ movie.title }}-->
+    <!--          </li>-->
+    <!--        </ul>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
 
 <style lang="scss" scoped>
 .page-wrapper {
-  @apply w-full h-screen;
+  @apply w-full bg-black;
   @apply mx-auto overflow-x-auto overflow-y-auto;
-  max-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
   max-width: 100vw;
   @apply flex;
-
-  .aside {
-    @apply flex-1 h-full;
-    @apply p-10;
-  }
-  .aside-context {
-    @apply bg-bg;
-    @apply flex flex-col items-start justify-center;
-    .my-nane {
-      @apply text-7xl font-extrabold text-primary;
-    }
-    .title {
-      @apply text-3xl mt-4 font-normal text-primary-light;
-    }
-    .work-btn {
-      @apply mt-20 w-1/2 bg-secondary text-white;
-    }
-  }
-  .ondui {
-    background: url("assets/images/ondui-foot.jpg");
-    @apply bg-contain bg-no-repeat bg-bottom;
-  }
 }
 </style>

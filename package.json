@@ -19,6 +19,7 @@
     "element-plus": "^2.8.3",
     "nuxt": "^3.13.0",
     "nuxt-aos": "^1.2.5",
+    "nuxt-icons": "^3.2.1",
     "vue": "latest",
     "vue-router": "latest"
   },
