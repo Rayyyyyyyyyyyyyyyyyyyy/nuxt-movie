@@ -8,10 +8,9 @@ const onAvatarClick = () => {
 </script>
 
 <template>
-  <div class="pager-herder">
+  <div class="pager-herder" data-aos="fade-down">
     <NuxtLink to="/">
       <el-avatar
-        data-aos="fade-right"
         :size="50"
         class="cursor-pointer"
         @click="onAvatarClick"
@@ -19,7 +18,7 @@ const onAvatarClick = () => {
       />
     </NuxtLink>
 
-    <el-tabs class="header-tabs" v-model="state.activeName" data-aos="fade-up">
+    <el-tabs class="header-tabs" v-model="state.activeName">
       <el-tab-pane name="about">
         <template #label>
           <NuxtLink to="/about">About Me</NuxtLink>
