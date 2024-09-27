@@ -1,4 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { locale, locales, setLocale } = useI18n();
+
+const availableLocales = computed(() => {
+  return locales.value;
+});
+const updateLocale = (value) => {
+  setLocale(value);
+  window.location.reload();
+};
+</script>
 
 <template>
   <div class="footer-wrapper">
@@ -55,6 +65,19 @@
       <a target="_blank" href="https://docs.netlify.com/" title="netlify">
         <nuxt-icon name="netlify" filled />
       </a>
+
+      <div class="lang">
+        <p>Language:</p>
+        <el-select @change="updateLocale" v-model="locale" class="lang-sel">
+          <el-option
+            v-for="(loc, ind) in availableLocales"
+            :key="ind"
+            :label="loc.name"
+            :value="loc.code"
+          >
+          </el-option>
+        </el-select>
+      </div>
     </el-row>
   </div>
 </template>
@@ -89,6 +112,14 @@
     ::v-deep() {
       .nuxt-icon svg {
         @apply text-xl;
+      }
+    }
+    .lang {
+      @apply ml-4;
+      @apply flex items-center;
+
+      .lang-sel {
+        @apply w-48 ml-4;
       }
     }
   }
