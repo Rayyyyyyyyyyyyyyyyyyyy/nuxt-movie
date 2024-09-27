@@ -19,6 +19,10 @@ export default {
         secondary: {
           DEFAULT: "#A6A18A",
         },
+        success: {
+          DEFAULT: "#40c1ad",
+          light: "#52c41a",
+        },
 
         bg: {
           DEFAULT: "#F2F2F0",

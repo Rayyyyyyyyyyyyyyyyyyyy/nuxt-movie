@@ -84,7 +84,7 @@ const updateLocale = (value) => {
 
 <style scoped lang="scss">
 .footer-wrapper {
-  @apply w-full p-10 bg-black;
+  @apply w-full p-10 bg-black h-72;
   @apply flex flex-col items-start;
   @apply text-white;
 
