@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: false },
@@ -14,10 +15,12 @@ export default defineNuxtConfig({
     "nuxt-aos",
     "nuxt-icons",
     "@nuxtjs/i18n",
+    "@nuxt/image",
   ],
   eslint: {
     // options here
   },
+  image: {},
 
   plugins: [{ src: "~/plugins/aos.client.ts", mode: "client" }], // 注册插件
   css: ["~/assets/styles/tailwind.scss", "aos/dist/aos.css"],
@@ -27,9 +30,11 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+
   runtimeConfig: {
     public: {
-      tmdbApiKey: process.env.TMDB_API_KEY, // 配置公开的 API 密钥
+      baseURL: process.env.BASE_URL || "https://api.themoviedb.org/3",
+      tmdbApiKey: process.env.TMDB_API_KEY || "",
     },
   },
   i18n: {

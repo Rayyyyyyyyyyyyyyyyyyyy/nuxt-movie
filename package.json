@@ -13,7 +13,9 @@
     "vue": "latest"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@nuxt/eslint": "^0.5.7",
+    "@nuxt/image": "npm:@nuxt/image-nightly@latest",
     "@pinia/nuxt": "^0.5.4",
     "@types/aos": "^3.0.7",
     "element-plus": "^2.8.3",
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.10",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@nuxtjs/i18n": "^8.3.0",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "autoprefixer": "^10.4.20",
     "dayjs-nuxt": "^2.1.11",
@@ -34,7 +37,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "postcss": "^8.4.47",
-    "@nuxtjs/i18n": "^8.3.0",
     "prettier": "^3.3.3",
     "sass-embedded": "^1.79.2",
     "tailwindcss": "^3.4.12",
