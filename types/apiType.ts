@@ -1,3 +1,14 @@
+export type TMovieListRes<T> = {
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
+  dates?: {
+    maximum: string;
+    minimum: string;
+  };
+};
+
 export type TMovieITem = {
   adult: boolean;
   backdrop_path: string;
@@ -10,14 +21,10 @@ export type TMovieITem = {
   poster_path: string;
   release_date: string;
   title: string;
-  video: false;
+  video: boolean;
   vote_average: number;
   vote_count: number;
-};
-
-export type TMovieListRes = {
-  page: number;
-  results: TMovieITem[];
-  total_pages: number;
-  total_results: number;
+  backdropUrl?: string;
+  posterUrl?: string;
+  moveRate?: number;
 };

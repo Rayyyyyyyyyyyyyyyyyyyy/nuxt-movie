@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
+import { IMG_BASE_URL } from "~/consts/AppConst";
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: false },
@@ -20,7 +22,14 @@ export default defineNuxtConfig({
   eslint: {
     // options here
   },
-  image: {},
+  image: {
+    domains: ["http://localhost:3000"],
+  },
+  nitro: {
+    routeRules: {
+      "/proxy/**": { proxy: "https://image.tmdb.org/t/p/original/**" },
+    },
+  },
 
   plugins: [{ src: "~/plugins/aos.client.ts", mode: "client" }], // 注册插件
   css: ["~/assets/styles/tailwind.scss", "aos/dist/aos.css"],
