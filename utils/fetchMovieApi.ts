@@ -31,7 +31,6 @@ export async function fetchMovieApi(path: string, query: any) {
       },
     });
   } catch (error) {
-    console.error(error);
     throw createError({
       statusCode: 500,
       statusMessage: "Failed to fetch movie data",

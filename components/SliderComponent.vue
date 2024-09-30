@@ -7,19 +7,23 @@ const props = defineProps({
     default: [],
   },
 });
+const router = useRouter();
+
+const goDetail = (movieID: string) => {
+  router.push(`/movie/${movieID}`);
+};
 </script>
 
 <template>
   <el-carousel indicator-position="outside" :autoplay="false" height="600px">
-    <el-carousel-item v-for="item in carousel_list" :key="item">
-      <div class="hero-block">
+    <el-carousel-item
+      v-for="(item, index) in carousel_list"
+      :key="index"
+      @click="goDetail(item.id)"
+    >
+      <div class="carousel-item">
         <div class="img-box">
-          <NuxtImg
-            :src="item.backdropUrl"
-            alt=""
-            class="hero-bg"
-            format="webp"
-          />
+          <NuxtImg :src="item.backdropUrl" alt="" format="webp" />
         </div>
         <div class="context">
           <p class="title">{{ item.title }}</p>
@@ -48,7 +52,7 @@ const props = defineProps({
   </el-carousel>
 </template>
 <style lang="scss" scoped>
-.hero-block {
+.carousel-item {
   @apply text-white;
   @apply relative;
 

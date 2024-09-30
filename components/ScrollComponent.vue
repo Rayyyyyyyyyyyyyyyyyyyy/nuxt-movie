@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { TMovieITem } from "~/types/apiType";
+
 const props = defineProps({
   scroll_title: {
     type: String,
@@ -9,6 +11,11 @@ const props = defineProps({
     default: [],
   },
 });
+const router = useRouter();
+
+const goDetail = (movieID: string) => {
+  router.push(`/movie/${movieID}`);
+};
 </script>
 
 <template>
@@ -18,7 +25,12 @@ const props = defineProps({
   </el-row>
   <el-scrollbar>
     <div class="scrollbar-flex-content">
-      <div v-for="item in scroll_list" :key="item" class="scrollbar-demo-item">
+      <div
+        v-for="(item, index) in scroll_list"
+        class="scrollbar-demo-item"
+        @click="goDetail(item.id)"
+        :key="index"
+      >
         <NuxtImg
           :src="item.posterUrl"
           alt=""
