@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
-import { TMovieDetail } from "~/types/apiType";
+import { TExternal, TMovieDetail } from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
 
@@ -15,11 +15,9 @@ const props = defineProps({
   },
 });
 
-const movieDetailRes = computed(() => {
-  return props.movie_detail
-    ? AppUtils.deepCloneData(props.movie_detail)
-    : ({} as TMovieDetail);
-});
+const movieDetailRes: TMovieDetail = props.movie_detail
+  ? AppUtils.deepCloneData(props.movie_detail)
+  : {};
 
 const transformRunTime = (runMin: number) => {
   let hours = Math.floor(runMin / 60); // 取得整數小時
@@ -29,6 +27,9 @@ const transformRunTime = (runMin: number) => {
 };
 
 const setComma = (amountInt: number) => {
+  if (amountInt === 0) {
+    return "";
+  }
   return "$" + amountInt.toLocaleString();
 };
 
@@ -37,7 +38,7 @@ const state = reactive({
   generList: [],
 });
 const getCreater = () => {
-  const directing = movieDetailRes.value.credits.crew.find(
+  const directing = movieDetailRes.credits.crew.find(
     (item) => item.department === "Directing",
   );
   state.directing = directing;
@@ -48,8 +49,8 @@ const getCreater = () => {
   }
 };
 const getGenres = () => {
-  state.generList = movieDetailRes.value.genres;
-  return movieDetailRes.value.genres;
+  state.generList = movieDetailRes.genres;
+  return movieDetailRes.genres;
 };
 
 const getLangFullName = (lang: string) => {
@@ -69,14 +70,23 @@ const getLangFullName = (lang: string) => {
   }
 };
 const getProductionCompanies = () => {
-  const nameList = movieDetailRes.value.production_companies.map(
-    (item) => item.name,
-  );
+  const nameList = movieDetailRes.production_companies.map((item) => item.name);
   return nameList.join();
 };
 
 const leftTagClickFun = () => {};
 const rightTagClickFun = () => {};
+
+const cloneObj = AppUtils.deepCloneData(
+  movieDetailRes.external_ids,
+) as TExternal;
+let mapList = [];
+Object.keys(cloneObj).forEach((name, ind) => {
+  mapList.push({
+    label: name.split("_")[0],
+    value: Object.values(cloneObj)[ind],
+  });
+});
 </script>
 
 <template>
@@ -89,62 +99,67 @@ const rightTagClickFun = () => {};
       />
     </div>
 
-    <div class="detail">
-      <p class="title">{{ movieDetailRes.title }}</p>
+    <div class="detail-link">
+      <div class="detail">
+        <p class="title">{{ movieDetailRes.title }}</p>
 
-      <div class="rate-point">
-        <el-rate
-          v-if="movieDetailRes.moveRate"
-          v-model="movieDetailRes.moveRate"
-          disabled
-          show-score
-          text-color="#ff9900"
-          :score-template="`${movieDetailRes.vote_average} points`"
+        <div class="rate-point">
+          <el-rate
+            v-if="movieDetailRes.moveRate"
+            v-model="movieDetailRes.moveRate"
+            disabled
+            show-score
+            text-color="#ff9900"
+            :score-template="`${movieDetailRes.vote_average} points`"
+          />
+
+          <p class="rate-count">
+            {{
+              $t("{numberOfReviews} Reviews", {
+                numberOfReviews: movieDetailRes.vote_count,
+              })
+            }}
+          </p>
+        </div>
+
+        <p class="title">{{ $t("Storyline") }}</p>
+        <p class="overview">{{ movieDetailRes.overview }}</p>
+
+        <DetailRow
+          :label_1="$t('Release Date')"
+          :label_2="$t('Runtime')"
+          :value_1="dayjs(movieDetailRes.release_date).format('YYYY-MM-DD')"
+          :value_2="transformRunTime(movieDetailRes.runtime)"
         />
-
-        <p class="rate-count">
-          {{
-            $t("{numberOfReviews} Reviews", {
-              numberOfReviews: movieDetailRes.vote_count,
-            })
-          }}
-        </p>
+        <DetailRow
+          :label_1="$t('Director')"
+          :label_2="$t('Budget')"
+          :value_1="getCreater()"
+          :value_2="setComma(movieDetailRes.budget)"
+          :use_left_tag="true"
+          @leftTagClickEmit="leftTagClickFun"
+        />
+        <DetailRow
+          :label_1="$t('Revenue')"
+          :label_2="$t('Genre')"
+          :value_1="setComma(movieDetailRes.revenue)"
+          :tag_list="getGenres()"
+          :use_right_tag="true"
+        />
+        <DetailRow
+          :label_1="$t('Status')"
+          :label_2="$t('Language')"
+          :value_1="movieDetailRes.status"
+          :value_2="getLangFullName(movieDetailRes.original_language)"
+        />
+        <DetailRow
+          :label_1="$t('Production')"
+          :value_1="getProductionCompanies()"
+        />
       </div>
-
-      <p class="title">{{ $t("Storyline") }}</p>
-      <p class="overview">{{ movieDetailRes.overview }}</p>
-
-      <DetailRow
-        :label_1="$t('Release Date')"
-        :label_2="$t('Runtime')"
-        :value_1="dayjs(movieDetailRes.release_date).format('YYYY-MM-DD')"
-        :value_2="transformRunTime(movieDetailRes.runtime)"
-      />
-      <DetailRow
-        :label_1="$t('Director')"
-        :label_2="$t('Budget')"
-        :value_1="getCreater()"
-        :value_2="setComma(movieDetailRes.budget)"
-        :use_left_tag="true"
-        @leftTagClickEmit="leftTagClickFun"
-      />
-      <DetailRow
-        :label_1="$t('Revenue')"
-        :label_2="$t('Genre')"
-        :value_1="setComma(movieDetailRes.revenue)"
-        :tag_list="getGenres()"
-        :use_right_tag="true"
-      />
-      <DetailRow
-        :label_1="$t('Status')"
-        :label_2="$t('Language')"
-        :value_1="movieDetailRes.status"
-        :value_2="getLangFullName(movieDetailRes.original_language)"
-      />
-      <DetailRow
-        :label_1="$t('Production')"
-        :value_1="getProductionCompanies()"
-      />
+      <div class="link">
+        <nuxt-icon v-for="item in mapList" :name="item.label" filled />
+      </div>
     </div>
   </div>
 </template>
@@ -152,21 +167,27 @@ const rightTagClickFun = () => {};
 <style lang="scss" scoped>
 .movie-detail {
   @apply flex items-start p-10 w-4/5 mx-auto;
+  height: 648px;
 
   @media screen and (max-width: 1440px) {
     @apply w-full;
   }
 
   .salon-img {
-    @apply w-80;
+    @apply w-96;
     @apply border-4 border-primary/100;
     @apply rounded;
+  }
+  .detail-link {
+    @apply w-full h-full flex-1;
+    @apply flex flex-col;
+    @apply justify-between items-start;
+    @apply pl-10;
   }
 
   .detail {
     @apply text-white/80 flex-1;
     @apply flex flex-col;
-    @apply pl-10;
 
     .title {
       @apply text-3xl;
@@ -181,6 +202,15 @@ const rightTagClickFun = () => {};
     .overview {
       @apply my-4 text-white/70;
       @apply whitespace-pre-line;
+    }
+  }
+
+  .link {
+    @apply flex items-center justify-between gap-4 mt-2;
+
+    .nuxt-icon {
+      @apply text-3xl cursor-pointer;
+      @apply fill-white;
     }
   }
 }

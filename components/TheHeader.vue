@@ -1,34 +1,41 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SvgIcon from "~/components/SvgIcon.vue";
+
+const route = useRoute();
+const isActive = (linkName: string) => {
+  return route.path.includes(linkName);
+};
+</script>
 
 <template>
   <div class="the-header">
     <el-tooltip effect="dark" :content="$t('Home')" placement="right">
-      <NuxtLink v-slot="{ isActive }" to="/">
-        <div :class="{ 'active-icon': isActive }">
+      <NuxtLink to="/">
+        <div :class="{ 'active-icon': isActive('home') }">
           <nuxt-icon name="home" />
         </div>
       </NuxtLink>
     </el-tooltip>
 
     <el-tooltip effect="dark" :content="$t('Movies')" placement="right">
-      <NuxtLink v-slot="{ isActive }" to="/movie">
-        <div :class="{ 'active-icon': isActive }">
+      <NuxtLink to="/movie">
+        <div :class="{ 'active-icon': isActive('movie') }">
           <nuxt-icon name="movie" />
         </div>
       </NuxtLink>
     </el-tooltip>
 
     <el-tooltip effect="dark" :content="$t('TV Shows')" placement="right">
-      <NuxtLink v-slot="{ isActive }" to="/tv">
-        <div :class="{ 'active-icon': isActive }">
+      <NuxtLink to="/tv">
+        <div :class="{ 'active-icon': isActive('tv') }">
           <nuxt-icon name="tv" />
         </div>
       </NuxtLink>
     </el-tooltip>
 
     <el-tooltip effect="dark" :content="$t('Search')" placement="right">
-      <NuxtLink v-slot="{ isActive }" to="/search">
-        <div :class="{ 'active-icon': isActive }">
+      <NuxtLink to="/search">
+        <div :class="{ 'active-icon': isActive('search') }">
           <nuxt-icon name="search" />
         </div>
       </NuxtLink>

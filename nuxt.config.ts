@@ -1,7 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import { IMG_BASE_URL } from "~/consts/AppConst";
-
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: false },
@@ -25,6 +23,7 @@ export default defineNuxtConfig({
   image: {
     domains: ["http://localhost:3000"],
   },
+
   nitro: {
     routeRules: {
       "/proxy/**": { proxy: "https://image.tmdb.org/t/p/original/**" },

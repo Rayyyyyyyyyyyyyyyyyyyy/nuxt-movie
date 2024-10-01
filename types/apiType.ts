@@ -137,12 +137,14 @@ export type TMovieDetail = {
       job: string;
     }[];
   };
-  external_ids: {
-    imdb_id: string;
-    wikidata_id: string;
-    facebook_id: string;
-    instagram_id: string;
-    twitter_id: string;
-  };
+  external_ids: TExternal;
   moveRate?: number;
+};
+
+export type TExternal = {
+  imdb_id?: string;
+  wikidata_id?: string;
+  facebook_id?: string;
+  instagram_id?: string;
+  twitter_id?: string;
 };

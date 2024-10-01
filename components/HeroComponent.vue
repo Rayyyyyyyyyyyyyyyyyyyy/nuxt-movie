@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
 import AppUtils from "~/utils/appUtils";
 import { TMovieDetail } from "~/types/apiType";
 
@@ -13,9 +12,9 @@ const props = defineProps({
     default: "http://localhost:3000",
   },
 });
-const movieDetailRes = computed(() => {
-  return props.movie_detail ? AppUtils.deepCloneData(props.movie_detail) : {};
-}) as TMovieDetail;
+const movieDetailRes: TMovieDetail = props.movie_detail
+  ? AppUtils.deepCloneData(props.movie_detail)
+  : {};
 </script>
 
 <template>
@@ -33,10 +32,14 @@ const movieDetailRes = computed(() => {
 <style lang="scss" scoped>
 .hero-block {
   @apply text-white mb-6;
-  min-height: 600px;
+  height: 600px;
 
   .img-box {
-    @apply z-0 w-full h-full overflow-hidden;
+    @apply z-0 w-full h-full;
+    img {
+      @apply w-full h-full;
+      @apply object-contain object-center;
+    }
   }
 }
 </style>

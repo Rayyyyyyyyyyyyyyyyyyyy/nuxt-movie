@@ -58,7 +58,7 @@ const onRightTagClick = (tagId: string) => {
           </div>
         </div>
       </el-col>
-      <el-col :span="10" v-if="label_2">
+      <el-col :span="12" v-if="label_2">
         <div class="item">
           <div class="label">{{ label_2 }}:</div>
           <p class="value" v-if="!use_right_tag">
