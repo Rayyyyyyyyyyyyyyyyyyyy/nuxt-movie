@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
 import { TMovieDetail } from "~/types/apiType";
+import dayjs from "dayjs";
+import { useRuntimeConfig } from "#imports";
 
 const props = defineProps({
   movie_detail: {
@@ -14,8 +16,67 @@ const props = defineProps({
 });
 
 const movieDetailRes = computed(() => {
-  return props.movie_detail ? AppUtils.deepCloneData(props.movie_detail) : {};
-}) as TMovieDetail;
+  return props.movie_detail
+    ? AppUtils.deepCloneData(props.movie_detail)
+    : ({} as TMovieDetail);
+});
+
+const transformRunTime = (runMin: number) => {
+  let hours = Math.floor(runMin / 60); // 取得整數小時
+  let remainingMinutes = runMin % 60; // 取得剩餘的分鐘
+
+  return hours + "h " + remainingMinutes + "min";
+};
+
+const setComma = (amountInt: number) => {
+  return "$" + amountInt.toLocaleString();
+};
+
+const state = reactive({
+  directer: {},
+  generList: [],
+});
+const getCreater = () => {
+  const directing = movieDetailRes.value.credits.crew.find(
+    (item) => item.department === "Directing",
+  );
+  state.directing = directing;
+  if (directing) {
+    return directing.name;
+  } else {
+    return "";
+  }
+};
+const getGenres = () => {
+  state.generList = movieDetailRes.value.genres;
+  return movieDetailRes.value.genres;
+};
+
+const getLangFullName = (lang: string) => {
+  const config = useRuntimeConfig();
+  const i18nOption = AppUtils.deepCloneData(
+    config.public.i18n.configLocales,
+  ) as {
+    code: string;
+    name: string;
+    files: string[];
+  }[];
+  const originLangObj = i18nOption.find((item) => item.code == lang);
+  if (originLangObj) {
+    return originLangObj.name;
+  } else {
+    return lang;
+  }
+};
+const getProductionCompanies = () => {
+  const nameList = movieDetailRes.value.production_companies.map(
+    (item) => item.name,
+  );
+  return nameList.join();
+};
+
+const leftTagClickFun = () => {};
+const rightTagClickFun = () => {};
 </script>
 
 <template>
@@ -29,14 +90,72 @@ const movieDetailRes = computed(() => {
     </div>
 
     <div class="detail">
-      <div class="title">{{ $t("Storyline") }}</div>
+      <p class="title">{{ movieDetailRes.title }}</p>
+
+      <div class="rate-point">
+        <el-rate
+          v-if="movieDetailRes.moveRate"
+          v-model="movieDetailRes.moveRate"
+          disabled
+          show-score
+          text-color="#ff9900"
+          :score-template="`${movieDetailRes.vote_average} points`"
+        />
+
+        <p class="rate-count">
+          {{
+            $t("{numberOfReviews} Reviews", {
+              numberOfReviews: movieDetailRes.vote_count,
+            })
+          }}
+        </p>
+      </div>
+
+      <p class="title">{{ $t("Storyline") }}</p>
+      <p class="overview">{{ movieDetailRes.overview }}</p>
+
+      <DetailRow
+        :label_1="$t('Release Date')"
+        :label_2="$t('Runtime')"
+        :value_1="dayjs(movieDetailRes.release_date).format('YYYY-MM-DD')"
+        :value_2="transformRunTime(movieDetailRes.runtime)"
+      />
+      <DetailRow
+        :label_1="$t('Director')"
+        :label_2="$t('Budget')"
+        :value_1="getCreater()"
+        :value_2="setComma(movieDetailRes.budget)"
+        :use_left_tag="true"
+        @leftTagClickEmit="leftTagClickFun"
+      />
+      <DetailRow
+        :label_1="$t('Revenue')"
+        :label_2="$t('Genre')"
+        :value_1="setComma(movieDetailRes.revenue)"
+        :tag_list="getGenres()"
+        :use_right_tag="true"
+      />
+      <DetailRow
+        :label_1="$t('Status')"
+        :label_2="$t('Language')"
+        :value_1="movieDetailRes.status"
+        :value_2="getLangFullName(movieDetailRes.original_language)"
+      />
+      <DetailRow
+        :label_1="$t('Production')"
+        :value_1="getProductionCompanies()"
+      />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .movie-detail {
-  @apply flex items-start p-10;
+  @apply flex items-start p-10 w-4/5 mx-auto;
+
+  @media screen and (max-width: 1440px) {
+    @apply w-full;
+  }
 
   .salon-img {
     @apply w-80;
@@ -45,12 +164,23 @@ const movieDetailRes = computed(() => {
   }
 
   .detail {
-    @apply text-white;
+    @apply text-white/80 flex-1;
     @apply flex flex-col;
     @apply pl-10;
 
     .title {
-      @apply text-4xl;
+      @apply text-3xl;
+    }
+    .rate-point {
+      @apply flex items-center mb-2;
+
+      .rate-count {
+        @apply ml-4;
+      }
+    }
+    .overview {
+      @apply my-4 text-white/70;
+      @apply whitespace-pre-line;
     }
   }
 }

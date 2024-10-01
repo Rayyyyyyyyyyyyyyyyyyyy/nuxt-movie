@@ -28,6 +28,7 @@
   @apply w-full h-full;
   @apply flex justify-center items-center gap-x-48;
   @apply text-white;
+  min-height: calc(100vh - 288px);
 
   .nuxt-icon {
     @apply text-9xl;

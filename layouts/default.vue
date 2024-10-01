@@ -20,16 +20,13 @@
   max-width: 100vw;
   max-height: 100vh;
   @apply flex;
+  @apply overflow-x-auto overflow-y-auto;
 
   .main {
     @apply w-full h-full;
-    @apply overflow-x-auto overflow-y-auto;
     @apply bg-black;
     @apply flex flex-col;
-
-    .main-container {
-      @apply flex-1;
-    }
+    @apply overflow-x-auto overflow-y-auto;
   }
 }
 </style>
