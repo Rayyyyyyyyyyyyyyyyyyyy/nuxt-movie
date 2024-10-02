@@ -18,7 +18,7 @@ const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
 })) as TMovieDetail;
 const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
 
-if (process.client) {
+if (import.meta.client) {
   originHref = location.origin;
   cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
 }
@@ -28,9 +28,9 @@ if (process.client) {
   <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref" />
 
   <el-tabs v-model="state.activeName" class="tab-content">
-    <el-tab-pane :label="$t('Overview')" name="overView"></el-tab-pane>
-    <el-tab-pane :label="$t('Videos')" name="videos"></el-tab-pane>
-    <el-tab-pane :label="$t('Media Photos')" name="photos"></el-tab-pane>
+    <el-tab-pane :label="$t('Overview')" name="overView"/>
+    <el-tab-pane :label="$t('Videos')" name="videos"/>
+    <el-tab-pane :label="$t('Media Photos')" name="photos"/>
   </el-tabs>
 
   <DetailComponent :movie_detail="cloneDetailData" :origin_href="originHref" />

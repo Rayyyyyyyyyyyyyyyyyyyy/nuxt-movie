@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
-import AppUtils from "~/utils/appUtils";
-import { TMovieDetail } from "~/types/apiType";
 
 const props = defineProps({
   label_1: {
@@ -40,12 +37,14 @@ const onLeftTagClick = () => {
 const onRightTagClick = (tagId: string) => {
   emits("rightTagClickEmit", tagId);
 };
+
+const colSpan = !props.label_2 ? 16: 12
 </script>
 
 <template>
   <div class="detail-row">
     <el-row justify="space-between">
-      <el-col :span="12">
+      <el-col :span="colSpan">
         <div class="item">
           <div class="label">{{ label_1 }}:</div>
           <p class="value" v-if="!use_left_tag">

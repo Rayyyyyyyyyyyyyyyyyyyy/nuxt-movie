@@ -199,10 +199,13 @@ Object.keys(cloneObj).forEach((name, ind) => {
         @apply ml-4;
       }
     }
+
     .overview {
       @apply my-4 text-white/70;
       @apply whitespace-pre-line;
+
     }
+
   }
 
   .link {
