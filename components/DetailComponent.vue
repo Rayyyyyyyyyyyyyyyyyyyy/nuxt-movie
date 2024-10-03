@@ -43,7 +43,9 @@ const setComma = (amountInt: number) => {
 const state = reactive({
   directer: {} as TActorCrew,
   genresList: [] as TGenresItem[],
-  mapList: [] as TOption[]
+  mapList: [] as TOption[],
+  actorList: [] as TActorCast[]
+
 });
 const getCreator = () => {
   const directing = movieDetailRes.credits.crew.find(
@@ -108,6 +110,19 @@ const setMovieLink = () => {
 setMovieLink()
 
 
+
+
+const setMovieActorName = () => {
+  const cloneObj = AppUtils.deepCloneData(
+      movieDetailRes.credits.cast,
+  ) as TActorCast[];
+  cloneObj.forEach((item) => {
+    item.nickName = item.original_name
+    item.title = item.name
+  })
+  state.actorList = cloneObj
+}
+setMovieActorName()
 </script>
 
 <template>
@@ -190,6 +205,14 @@ setMovieLink()
       </div>
     </div>
   </div>
+
+  <Scrollcomponent
+      :scroll_list="state.actorList"
+      :scroll_title="$t('Cast')"
+      :show_more="false"
+      :show_rate="false"
+      :show_nickName="true"
+  />
 </template>
 
 <style lang="scss" scoped>

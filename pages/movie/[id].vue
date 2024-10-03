@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMovieApi } from "~/path/to/api";
+import {getMovieApi} from "~/path/to/api";
 import type {TActorCast, TMovieDetail} from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
@@ -14,7 +14,7 @@ const state = reactive({
 
 const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
   append_to_response:
-    "videos,credits,images,external_ids,release_dates,combined_credits",
+      "videos,credits,images,external_ids,release_dates,combined_credits",
 })) as TMovieDetail;
 const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
 
@@ -24,16 +24,10 @@ if (import.meta.client) {
 }
 
 
-const setMovieActorName = () => {
-  const cloneObj = AppUtils.deepCloneData(
-      movieDetailRes.credits.cast,
-  ) as TActorCast[];
-}
-setMovieActorName()
 </script>
 
 <template>
-  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref" />
+  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref"/>
 
   <el-tabs v-model="state.activeName" class="tab-content">
     <el-tab-pane :label="$t('Overview')" name="overView"/>
@@ -41,7 +35,9 @@ setMovieActorName()
     <el-tab-pane :label="$t('Media Photos')" name="photos"/>
   </el-tabs>
 
-  <DetailComponent :movie_detail="cloneDetailData" :origin_href="originHref" />
+  <DetailComponent :movie_detail="cloneDetailData" :origin_href="originHref"/>
+
+
 </template>
 
 <style lang="scss" scoped>
@@ -51,15 +47,18 @@ setMovieActorName()
       &:after {
         @apply bg-transparent;
       }
+
       .el-tabs__nav-scroll {
         @apply flex justify-center items-center;
 
         .el-tabs__item {
           @apply text-3xl;
         }
+
         .el-tabs__active-bar {
           @apply bg-white;
         }
+
         .is-active {
           @apply text-white;
         }

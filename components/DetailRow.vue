@@ -43,21 +43,21 @@ const colSpan = !props.label_2 ? 16: 12
 
 <template>
   <div class="detail-row">
-    <el-row justify="space-between">
-      <el-col :span="colSpan">
+    <el-row >
+    <el-col :span="colSpan">
         <div class="item">
           <div class="label">{{ label_1 }}:</div>
-          <p class="value" v-if="!use_left_tag">
+          <p v-if="!use_left_tag" class="value">
             {{ value_1 }}
           </p>
-          <div class="value" v-if="use_left_tag">
+          <div v-if="use_left_tag" class="value">
             <el-button type="info" plain size="small" @click="onLeftTagClick">{{
               value_1
             }}</el-button>
           </div>
         </div>
       </el-col>
-      <el-col :span="12" v-if="label_2">
+      <el-col v-if="label_2" :span="12">
         <el-row class="item">
           <el-col :span="9">
             <div class="label">{{ label_2 }}:</div>
@@ -65,10 +65,10 @@ const colSpan = !props.label_2 ? 16: 12
 
           </el-col>
           <el-col :span="12">
-            <p class="value" v-if="!use_right_tag">
+            <p v-if="!use_right_tag" class="value">
               {{ value_2 }}
             </p>
-            <div class="value tag-value" v-if="use_right_tag">
+            <div v-if="use_right_tag" class="value tag-value">
               <el-button
                   v-for="tag in tag_list"
                   :key="tag.id"
@@ -84,13 +84,20 @@ const colSpan = !props.label_2 ? 16: 12
         </el-row>
 
       </el-col>
+      
     </el-row>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+
 .detail-row {
   @apply w-3/5 text-white mt-2;
+
+  .rwd-row {
+  @apply flex justify-between;
+
+  }
 }
 
 .item {

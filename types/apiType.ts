@@ -143,6 +143,8 @@ export type TActorCast =  {
   character: string;
   credit_id: string;
   order: number;
+  nickName?: string
+  title?: string
 }
 export type TActorCrew =  {
   adult: boolean;
