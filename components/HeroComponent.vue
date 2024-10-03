@@ -20,6 +20,7 @@ const movieDetailRes: TMovieDetail = props.movie_detail
 <template>
   <div class="hero-block" id="heroBlock">
     <div class="img-box">
+      <div class="black-box"></div>
       <NuxtImg
         :src="`${origin_href}/proxy${movieDetailRes.backdrop_path}`"
         alt=""
@@ -27,7 +28,7 @@ const movieDetailRes: TMovieDetail = props.movie_detail
       />
     </div>
 
-    <div class="movie-outline">
+    <div class="movie-outline" data-aos="fade-up">
       <p class="title">{{ movieDetailRes.title }}</p>
       <div class="rate-point">
         <el-rate
@@ -63,6 +64,12 @@ const movieDetailRes: TMovieDetail = props.movie_detail
   .img-box {
     @apply z-0 w-full h-full;
     @apply absolute top-0 right-0;
+
+    .black-box {
+      @apply absolute top-0 right-0;
+      @apply w-full h-full;
+      @apply bg-gradient-to-r from-black from-30%;
+    }
 
     img {
       @apply w-full h-full;

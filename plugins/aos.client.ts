@@ -7,7 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       AOS.init({
         // 自定义选项
         delay: 200,
-        duration: 1000,
         once: true, // 是否只执行一次动画
       });
     }

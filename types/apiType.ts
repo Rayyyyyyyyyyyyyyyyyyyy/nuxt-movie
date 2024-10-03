@@ -49,9 +49,9 @@ export type TMovieDetail = {
   id: number;
   imdb_id: string;
   images: {
-    backdrops: string[];
-    logos: string[];
-    posters: string[];
+    backdrops: TImageDetail[];
+    logos: TImageDetail[];
+    posters: TImageDetail[];
   };
   origin_country: string[];
   original_language: string;
@@ -179,4 +179,14 @@ export type TRecommendItem = {
   vote_count: number;
   posterUrl?: string;
   moveRate?: number;
+};
+
+export type TImageDetail = {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
 };

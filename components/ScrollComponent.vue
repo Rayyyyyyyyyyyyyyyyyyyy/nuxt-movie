@@ -86,6 +86,10 @@ const goDetail = (itemId: string) => {
 
   .scroll-item_image {
     @apply w-56 h-80;
+    &:hover {
+      @apply transition duration-150 ease-in-out;
+      transform: scale(1.1);
+    }
   }
   .item-name {
     @apply mt-2;

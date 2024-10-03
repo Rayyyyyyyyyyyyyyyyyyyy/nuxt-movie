@@ -30,6 +30,7 @@ if (import.meta.client) {
 const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
   append_to_response:
     "videos,credits,images,external_ids,release_dates,combined_credits",
+  include_image_language: "en",
 })) as TMovieDetail;
 const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
 cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
@@ -51,7 +52,12 @@ cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
         :origin_href="originHref"
       />
     </el-tab-pane>
-    <el-tab-pane :label="$t('Media Photos')" name="photos" />
+    <el-tab-pane :label="$t('Media Photos')" name="photos">
+      <PhotoComponent
+        :movie_detail="cloneDetailData"
+        :origin_href="originHref"
+      />
+    </el-tab-pane>
   </el-tabs>
 </template>
 

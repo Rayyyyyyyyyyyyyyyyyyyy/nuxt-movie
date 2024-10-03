@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const { locale, locales, setLocale } = useI18n();
+let availableLocales = [];
+if (process.client) {
+  availableLocales = locales.value;
+}
 
-const availableLocales = computed(() => {
-  return locales.value;
-});
 const updateLocale = (value) => {
   setLocale(value);
   window.location.reload();
@@ -53,20 +54,19 @@ const updateLocale = (value) => {
     </el-row>
 
     <el-row align="middle" class="footer-link">
-      <a
-        target="_blank"
-        href="https://github.com/Rayyyyyyyyyyyyyyyyyyyy?tab=repositories"
-        title="github"
+      <NuxtLink
         class="mr-4"
+        target="_blank"
+        to="https://github.com/Rayyyyyyyyyyyyyyyyyyyy?tab=repositories"
       >
         <nuxt-icon name="github" filled />
-      </a>
+      </NuxtLink>
 
-      <a target="_blank" href="https://docs.netlify.com/" title="netlify">
+      <NuxtLink target="_blank" to="https://docs.netlify.com">
         <nuxt-icon name="netlify" filled />
-      </a>
+      </NuxtLink>
 
-      <div class="lang">
+      <div class="lang" v-if="availableLocales.length > 0">
         <p>Language:</p>
         <el-select @change="updateLocale" v-model="locale" class="lang-sel">
           <el-option

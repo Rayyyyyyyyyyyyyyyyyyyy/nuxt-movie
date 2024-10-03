@@ -87,15 +87,16 @@ const playVideo = (videoKey: string) => {
   </div>
 
   <el-dialog
+    v-if="state.videoVisible"
     v-model="state.videoVisible"
     title=""
-    class="video-dialog"
-    fullscreen
+    class="screen-dialog"
+    width="800px"
     destroy-on-close
   >
     <iframe
-      width="100%"
-      height="100%"
+      width="800px"
+      height="550px"
       :src="`https://www.youtube.com/embed/${state.videoKey}?rel=0&showinfo=0&autoplay=0`"
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

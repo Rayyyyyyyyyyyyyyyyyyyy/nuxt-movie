@@ -45,7 +45,7 @@ const onRightTagClick = (tagId: string) => {
       <p v-if="!use_left_tag" class="value">
         {{ value_1 }}
       </p>
-      <div v-if="use_left_tag" class="value">
+      <div v-if="use_left_tag && value_1" class="value">
         <el-button type="info" plain size="small" @click="onLeftTagClick">{{
           value_1
         }}</el-button>
