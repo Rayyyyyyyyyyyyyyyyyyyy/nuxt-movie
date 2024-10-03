@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TMovieITem } from "~/types/apiType";
 
 const props = defineProps({
   scroll_title: {
@@ -9,6 +8,18 @@ const props = defineProps({
   scroll_list: {
     type: Array,
     default: [],
+  },
+  show_more: {
+    type: Boolean,
+    default: true
+  },
+  show_rate: {
+    type: Boolean,
+    default: true
+  },
+  show_nickName: {
+    type: Boolean,
+    default: false
   },
 });
 const router = useRouter();
@@ -21,7 +32,9 @@ const goDetail = (movieID: string) => {
 <template>
   <el-row justify="space-between" align="bottom" class="title-row">
     <div class="title">{{ scroll_title }}</div>
-    <div class="show-more">{{ $t("Explore more") }}</div>
+    <div class="show-more"
+    v-if="show_more"
+    >{{ $t("Explore more") }}</div>
   </el-row>
   <el-scrollbar>
     <div class="scrollbar-flex-content">
@@ -40,12 +53,16 @@ const goDetail = (movieID: string) => {
 
         <p class="item-name">{{ item.title }}</p>
         <el-rate
+            v-if="show_rate"
           v-model="item.moveRate"
           disabled
           show-score
           text-color="#ff9900"
           :score-template="`${item.vote_average.toFixed(1)}`"
         />
+        <p class="nick-name"
+        v-if="show_nickName"
+        >{{ item.nickName }}</p>
       </div>
     </div>
   </el-scrollbar>
@@ -77,6 +94,9 @@ const goDetail = (movieID: string) => {
   }
   .item-name {
     @apply mt-2;
+  }
+  .nick-name {
+    @apply text-white/60;
   }
 }
 </style>

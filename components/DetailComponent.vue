@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
-import { TExternal, TMovieDetail } from "~/types/apiType";
+import {
+  type TActorCast,
+  type TActorCrew,
+  TExternal,
+  type TGenresItem,
+  TMovieDetail,
+  type TOption
+} from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
 
@@ -34,10 +41,11 @@ const setComma = (amountInt: number) => {
 };
 
 const state = reactive({
-  directer: {},
-  generList: [],
+  directer: {} as TActorCrew,
+  genresList: [] as TGenresItem[],
+  mapList: [] as TOption[]
 });
-const getCreater = () => {
+const getCreator = () => {
   const directing = movieDetailRes.credits.crew.find(
     (item) => item.department === "Directing",
   );
@@ -49,7 +57,7 @@ const getCreater = () => {
   }
 };
 const getGenres = () => {
-  state.generList = movieDetailRes.genres;
+  state.genresList = movieDetailRes.genres;
   return movieDetailRes.genres;
 };
 
@@ -77,16 +85,29 @@ const getProductionCompanies = () => {
 const leftTagClickFun = () => {};
 const rightTagClickFun = () => {};
 
-const cloneObj = AppUtils.deepCloneData(
-  movieDetailRes.external_ids,
-) as TExternal;
-let mapList = [];
-Object.keys(cloneObj).forEach((name, ind) => {
-  mapList.push({
-    label: name.split("_")[0],
-    value: Object.values(cloneObj)[ind],
+enum ELink {
+  twitter_id = 'https://x.com/',
+  facebook_id = 'https://www.facebook.com/',
+  instagram_id = 'https://www.instagram.com/',
+  imdb_id = 'https://www.imdb.com/title/'
+}
+
+const setMovieLink = () => {
+  const cloneObj = AppUtils.deepCloneData(
+      movieDetailRes.external_ids,
+  ) as TExternal;
+  Object.keys(cloneObj).forEach((name, ind) => {
+    if(name !== 'wikidata_id' && Object.values(cloneObj)[ind]) {
+      state.mapList.push({
+        label: name.split("_")[0],
+        value: `${ELink[name]}${Object.values(cloneObj)[ind]}`,
+      });
+    }
   });
-});
+}
+setMovieLink()
+
+
 </script>
 
 <template>
@@ -134,7 +155,7 @@ Object.keys(cloneObj).forEach((name, ind) => {
         <DetailRow
           :label_1="$t('Director')"
           :label_2="$t('Budget')"
-          :value_1="getCreater()"
+          :value_1="getCreator()"
           :value_2="setComma(movieDetailRes.budget)"
           :use_left_tag="true"
           @leftTagClickEmit="leftTagClickFun"
@@ -158,7 +179,14 @@ Object.keys(cloneObj).forEach((name, ind) => {
         />
       </div>
       <div class="link">
-        <nuxt-icon v-for="item in mapList" :name="item.label" filled />
+        <NuxtLink
+            target="_blank"
+            v-for="(item, ind) in state.mapList"
+            :key="ind"
+            :to="item.value">
+
+          <nuxt-icon :name="item.label" filled />
+        </NuxtLink>
       </div>
     </div>
   </div>

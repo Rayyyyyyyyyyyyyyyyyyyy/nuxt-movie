@@ -1,3 +1,8 @@
+export type TOption = {
+  label: string,
+  value: string
+}
+
 export type TMovieListRes<T> = {
   page: number;
   results: T[];
@@ -39,10 +44,7 @@ export type TMovieDetail = {
     backdrop_path: string;
   };
   budget: number;
-  genres: {
-    id: number;
-    name: string;
-  }[];
+  genres: TGenresItem[];
   homepage: string;
   id: number;
   imdb_id: string;
@@ -109,33 +111,8 @@ export type TMovieDetail = {
     }[];
   };
   credits: {
-    cast: {
-      adult: boolean;
-      gender: number;
-      id: number;
-      known_for_department: string;
-      name: string;
-      original_name: string;
-      popularity: number;
-      profile_path: string;
-      cast_id: number;
-      character: string;
-      credit_id: string;
-      order: number;
-    }[];
-    crew: {
-      adult: boolean;
-      gender: number;
-      id: number;
-      known_for_department: string;
-      name: string;
-      original_name: string;
-      popularity: number;
-      profile_path: string;
-      cast_id: number;
-      department: string;
-      job: string;
-    }[];
+    cast: TActorCast[];
+    crew: TActorCrew[];
   };
   external_ids: TExternal;
   moveRate?: number;
@@ -148,3 +125,35 @@ export type TExternal = {
   instagram_id?: string;
   twitter_id?: string;
 };
+
+export type TGenresItem = {
+  id:string
+  name: string
+}
+export type TActorCast =  {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+export type TActorCrew =  {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  department: string;
+  job: string;
+}

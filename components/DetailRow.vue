@@ -58,23 +58,31 @@ const colSpan = !props.label_2 ? 16: 12
         </div>
       </el-col>
       <el-col :span="12" v-if="label_2">
-        <div class="item">
-          <div class="label">{{ label_2 }}:</div>
-          <p class="value" v-if="!use_right_tag">
-            {{ value_2 }}
-          </p>
-          <div class="value" v-if="use_right_tag">
-            <el-button
-              v-for="tag in tag_list"
-              :key="tag.id"
-              type="info"
-              plain
-              size="small"
-              @click="onRightTagClick(tag.id)"
+        <el-row class="item">
+          <el-col :span="9">
+            <div class="label">{{ label_2 }}:</div>
+
+
+          </el-col>
+          <el-col :span="12">
+            <p class="value" v-if="!use_right_tag">
+              {{ value_2 }}
+            </p>
+            <div class="value tag-value" v-if="use_right_tag">
+              <el-button
+                  v-for="tag in tag_list"
+                  :key="tag.id"
+                  type="info"
+                  plain
+                  size="small"
+                  @click="onRightTagClick(tag.id)"
               >{{ tag.name }}</el-button
-            >
-          </div>
-        </div>
+              >
+            </div>
+
+          </el-col>
+        </el-row>
+
       </el-col>
     </el-row>
   </div>
@@ -89,11 +97,13 @@ const colSpan = !props.label_2 ? 16: 12
   @apply flex items-center;
 
   .label {
-    @apply mr-2 text-right w-20;
+    @apply mr-2 text-right w-20 ;
   }
   .value {
     @apply flex-1 ml-2;
     @apply flex;
+  }
+  .tag-value {
   }
 }
 </style>

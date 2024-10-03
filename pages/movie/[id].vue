@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getMovieApi } from "~/path/to/api";
-import type { TMovieDetail } from "~/types/apiType";
+import type {TActorCast, TMovieDetail} from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();
@@ -22,6 +22,14 @@ if (import.meta.client) {
   originHref = location.origin;
   cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
 }
+
+
+const setMovieActorName = () => {
+  const cloneObj = AppUtils.deepCloneData(
+      movieDetailRes.credits.cast,
+  ) as TActorCast[];
+}
+setMovieActorName()
 </script>
 
 <template>
