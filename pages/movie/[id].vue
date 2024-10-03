@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {getMovieApi} from "~/path/to/api";
-import type {TActorCast, TMovieDetail} from "~/types/apiType";
+import { getMovieApi } from "~/path/to/api";
+import type { TActorCast, TMovieDetail } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();
@@ -10,34 +10,49 @@ let originHref = "http://localhost:3000";
 
 const state = reactive({
   activeName: "overView",
+  detailData: {} as TMovieDetail,
+  movieID: "",
 });
-
-const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
-  append_to_response:
-      "videos,credits,images,external_ids,release_dates,combined_credits",
-})) as TMovieDetail;
-const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
 
 if (import.meta.client) {
   originHref = location.origin;
-  cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
+
+  if (state.movieID !== movieId) {
+    const heroId = document.querySelector("#heroBlock");
+    if (heroId) {
+      heroId.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }
 }
 
-
+const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
+  append_to_response:
+    "videos,credits,images,external_ids,release_dates,combined_credits",
+})) as TMovieDetail;
+const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
+cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
 </script>
 
 <template>
-  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref"/>
+  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref" />
 
-  <el-tabs v-model="state.activeName" class="tab-content">
-    <el-tab-pane :label="$t('Overview')" name="overView"/>
-    <el-tab-pane :label="$t('Videos')" name="videos"/>
-    <el-tab-pane :label="$t('Media Photos')" name="photos"/>
+  <el-tabs v-model="state.activeName" class="tab-content" id="tab_id">
+    <el-tab-pane :label="$t('Overview')" name="overView">
+      <DetailComponent
+        :movie_detail="cloneDetailData"
+        :origin_href="originHref"
+      />
+    </el-tab-pane>
+    <el-tab-pane :label="$t('Videos')" name="videos">
+      <VideoComponent
+        :movie_detail="cloneDetailData"
+        :origin_href="originHref"
+      />
+    </el-tab-pane>
+    <el-tab-pane :label="$t('Media Photos')" name="photos" />
   </el-tabs>
-
-  <DetailComponent :movie_detail="cloneDetailData" :origin_href="originHref"/>
-
-
 </template>
 
 <style lang="scss" scoped>

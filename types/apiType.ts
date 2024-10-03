@@ -1,7 +1,7 @@
 export type TOption = {
-  label: string,
-  value: string
-}
+  label: string;
+  value: string;
+};
 
 export type TMovieListRes<T> = {
   page: number;
@@ -127,10 +127,10 @@ export type TExternal = {
 };
 
 export type TGenresItem = {
-  id:string
-  name: string
-}
-export type TActorCast =  {
+  id: string;
+  name: string;
+};
+export type TActorCast = {
   adult: boolean;
   gender: number;
   id: number;
@@ -143,10 +143,11 @@ export type TActorCast =  {
   character: string;
   credit_id: string;
   order: number;
-  nickName?: string
-  title?: string
-}
-export type TActorCrew =  {
+  nickName?: string;
+  title?: string;
+  posterUrl?: string;
+};
+export type TActorCrew = {
   adult: boolean;
   gender: number;
   id: number;
@@ -158,4 +159,24 @@ export type TActorCrew =  {
   cast_id: number;
   department: string;
   job: string;
-}
+};
+
+export type TRecommendItem = {
+  backdrop_path: string;
+  id: number;
+  title: string;
+  original_title: string;
+  overview: string;
+  poster_path: string;
+  media_type: string;
+  adult: boolean;
+  original_language: string;
+  genre_ids: number[];
+  popularity: number;
+  release_date: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  posterUrl?: string;
+  moveRate?: number;
+};

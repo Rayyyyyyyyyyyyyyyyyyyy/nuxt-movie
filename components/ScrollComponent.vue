@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps({
   scroll_title: {
     type: String,
@@ -11,30 +10,28 @@ const props = defineProps({
   },
   show_more: {
     type: Boolean,
-    default: true
+    default: true,
   },
   show_rate: {
     type: Boolean,
-    default: true
+    default: true,
   },
   show_nickName: {
     type: Boolean,
-    default: false
+    default: false,
   },
 });
-const router = useRouter();
 
-const goDetail = (movieID: string) => {
-  router.push(`/movie/${movieID}`);
+const emits = defineEmits(["imageClickEmit"]);
+const goDetail = (itemId: string) => {
+  emits("imageClickEmit", itemId);
 };
 </script>
 
 <template>
   <el-row justify="space-between" align="bottom" class="title-row">
     <div class="title">{{ scroll_title }}</div>
-    <div class="show-more"
-    v-if="show_more"
-    >{{ $t("Explore more") }}</div>
+    <div class="show-more" v-if="show_more">{{ $t("Explore more") }}</div>
   </el-row>
   <el-scrollbar>
     <div class="scrollbar-flex-content">
@@ -53,16 +50,14 @@ const goDetail = (movieID: string) => {
 
         <p class="item-name">{{ item.title }}</p>
         <el-rate
-            v-if="show_rate"
+          v-if="show_rate"
           v-model="item.moveRate"
           disabled
           show-score
           text-color="#ff9900"
           :score-template="`${item.vote_average.toFixed(1)}`"
         />
-        <p class="nick-name"
-        v-if="show_nickName"
-        >{{ item.nickName }}</p>
+        <p class="nick-name" v-if="show_nickName">{{ item.nickName }}</p>
       </div>
     </div>
   </el-scrollbar>

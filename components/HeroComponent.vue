@@ -18,13 +18,38 @@ const movieDetailRes: TMovieDetail = props.movie_detail
 </script>
 
 <template>
-  <div class="hero-block">
+  <div class="hero-block" id="heroBlock">
     <div class="img-box">
       <NuxtImg
         :src="`${origin_href}/proxy${movieDetailRes.backdrop_path}`"
         alt=""
         format="webp"
       />
+    </div>
+
+    <div class="movie-outline">
+      <p class="title">{{ movieDetailRes.title }}</p>
+      <div class="rate-point">
+        <el-rate
+          v-if="movieDetailRes.moveRate"
+          v-model="movieDetailRes.moveRate"
+          disabled
+          show-score
+          text-color="#ff9900"
+          :score-template="`${movieDetailRes.vote_average} points`"
+        />
+
+        <p class="rate-count">
+          {{
+            $t("{numberOfReviews} Reviews", {
+              numberOfReviews: movieDetailRes.vote_count,
+            })
+          }}
+        </p>
+      </div>
+
+      <p class="title">{{ $t("Storyline") }}</p>
+      <p class="overview">{{ movieDetailRes.overview }}</p>
     </div>
   </div>
 </template>
@@ -33,12 +58,36 @@ const movieDetailRes: TMovieDetail = props.movie_detail
 .hero-block {
   @apply text-white mb-6;
   height: 600px;
+  @apply relative;
 
   .img-box {
     @apply z-0 w-full h-full;
+    @apply absolute top-0 right-0;
+
     img {
       @apply w-full h-full;
-      @apply object-contain object-center;
+      @apply object-contain object-right;
+    }
+  }
+  .movie-outline {
+    @apply absolute left-0 top-0;
+    @apply p-10 h-full w-1/2;
+    @apply flex flex-col justify-center items-start;
+
+    .title {
+      @apply text-3xl;
+    }
+    .rate-point {
+      @apply flex items-center mb-2;
+
+      .rate-count {
+        @apply ml-4;
+      }
+    }
+
+    .overview {
+      @apply my-4 text-white/70;
+      @apply whitespace-pre-line;
     }
   }
 }

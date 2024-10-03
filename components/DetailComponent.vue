@@ -6,10 +6,13 @@ import {
   TExternal,
   type TGenresItem,
   TMovieDetail,
-  type TOption
+  TMovieListRes,
+  type TOption,
+  TRecommendItem,
 } from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
+import { getMovieApi } from "~/path/to/api";
 
 const props = defineProps({
   movie_detail: {
@@ -25,7 +28,6 @@ const props = defineProps({
 const movieDetailRes: TMovieDetail = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
-
 const transformRunTime = (runMin: number) => {
   let hours = Math.floor(runMin / 60); // 取得整數小時
   let remainingMinutes = runMin % 60; // 取得剩餘的分鐘
@@ -44,8 +46,7 @@ const state = reactive({
   directer: {} as TActorCrew,
   genresList: [] as TGenresItem[],
   mapList: [] as TOption[],
-  actorList: [] as TActorCast[]
-
+  actorList: [] as TActorCast[],
 });
 const getCreator = () => {
   const directing = movieDetailRes.credits.crew.find(
@@ -88,41 +89,62 @@ const leftTagClickFun = () => {};
 const rightTagClickFun = () => {};
 
 enum ELink {
-  twitter_id = 'https://x.com/',
-  facebook_id = 'https://www.facebook.com/',
-  instagram_id = 'https://www.instagram.com/',
-  imdb_id = 'https://www.imdb.com/title/'
+  twitter_id = "https://x.com/",
+  facebook_id = "https://www.facebook.com/",
+  instagram_id = "https://www.instagram.com/",
+  imdb_id = "https://www.imdb.com/title/",
 }
 
 const setMovieLink = () => {
   const cloneObj = AppUtils.deepCloneData(
-      movieDetailRes.external_ids,
+    movieDetailRes.external_ids,
   ) as TExternal;
   Object.keys(cloneObj).forEach((name, ind) => {
-    if(name !== 'wikidata_id' && Object.values(cloneObj)[ind]) {
+    if (name !== "wikidata_id" && Object.values(cloneObj)[ind]) {
       state.mapList.push({
         label: name.split("_")[0],
         value: `${ELink[name]}${Object.values(cloneObj)[ind]}`,
       });
     }
   });
-}
-setMovieLink()
-
-
-
+};
+setMovieLink();
 
 const setMovieActorName = () => {
   const cloneObj = AppUtils.deepCloneData(
-      movieDetailRes.credits.cast,
+    movieDetailRes.credits.cast,
   ) as TActorCast[];
   cloneObj.forEach((item) => {
-    item.nickName = item.original_name
-    item.title = item.name
-  })
-  state.actorList = cloneObj
-}
-setMovieActorName()
+    item.nickName = item.original_name;
+    item.title = item.name;
+    item.posterUrl = `${props.origin_href}/proxy${item.profile_path}`;
+  });
+  state.actorList = cloneObj;
+};
+setMovieActorName();
+
+const result = (await getMovieApi(
+  `movie/${movieDetailRes.id}/recommendations`,
+  {
+    page: 1,
+  },
+)) as TMovieListRes<TRecommendItem[]>;
+const cloneMovieList = AppUtils.deepCloneData(
+  result.results,
+) as TRecommendItem[];
+cloneMovieList.forEach((item) => {
+  item.posterUrl = `${props.origin_href}/proxy${item.poster_path}`;
+  item.moveRate = item.vote_average.toFixed(1) / 2;
+});
+
+const router = useRouter();
+const movieClickFun = (movieID: string) => {
+  router.push(`/movie/${movieID}`);
+};
+
+const actorClickFun = (actorId: string) => {
+  console.log("actorId", actorId);
+};
 </script>
 
 <template>
@@ -137,30 +159,6 @@ setMovieActorName()
 
     <div class="detail-link">
       <div class="detail">
-        <p class="title">{{ movieDetailRes.title }}</p>
-
-        <div class="rate-point">
-          <el-rate
-            v-if="movieDetailRes.moveRate"
-            v-model="movieDetailRes.moveRate"
-            disabled
-            show-score
-            text-color="#ff9900"
-            :score-template="`${movieDetailRes.vote_average} points`"
-          />
-
-          <p class="rate-count">
-            {{
-              $t("{numberOfReviews} Reviews", {
-                numberOfReviews: movieDetailRes.vote_count,
-              })
-            }}
-          </p>
-        </div>
-
-        <p class="title">{{ $t("Storyline") }}</p>
-        <p class="overview">{{ movieDetailRes.overview }}</p>
-
         <DetailRow
           :label_1="$t('Release Date')"
           :label_2="$t('Runtime')"
@@ -195,37 +193,47 @@ setMovieActorName()
       </div>
       <div class="link">
         <NuxtLink
-            target="_blank"
-            v-for="(item, ind) in state.mapList"
-            :key="ind"
-            :to="item.value">
-
+          target="_blank"
+          v-for="(item, ind) in state.mapList"
+          :key="ind"
+          :to="item.value"
+        >
           <nuxt-icon :name="item.label" filled />
         </NuxtLink>
       </div>
     </div>
   </div>
-
-  <Scrollcomponent
+  <div class="p-10">
+    <ScrollComponent
       :scroll_list="state.actorList"
       :scroll_title="$t('Cast')"
       :show_more="false"
       :show_rate="false"
       :show_nickName="true"
-  />
+      @imageClickEmit="actorClickFun"
+    />
+    <ScrollComponent
+      :scroll_list="cloneMovieList"
+      :scroll_title="$t('More like this')"
+      :show_more="false"
+      :show_rate="true"
+      :show_nickName="false"
+      @imageClickEmit="movieClickFun"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .movie-detail {
   @apply flex items-start p-10 w-4/5 mx-auto;
-  height: 648px;
+  height: 560px;
 
   @media screen and (max-width: 1440px) {
     @apply w-full;
   }
 
   .salon-img {
-    @apply w-96;
+    @apply w-80;
     @apply border-4 border-primary/100;
     @apply rounded;
   }
@@ -237,26 +245,8 @@ setMovieActorName()
   }
 
   .detail {
-    @apply text-white/80 flex-1;
+    @apply flex-1 w-full;
     @apply flex flex-col;
-
-    .title {
-      @apply text-3xl;
-    }
-    .rate-point {
-      @apply flex items-center mb-2;
-
-      .rate-count {
-        @apply ml-4;
-      }
-    }
-
-    .overview {
-      @apply my-4 text-white/70;
-      @apply whitespace-pre-line;
-
-    }
-
   }
 
   .link {
