@@ -26,7 +26,7 @@ export default defineNuxtConfig({
 
   nitro: {
     routeRules: {
-      "/proxy/**": { proxy: "https://image.tmdb.org/t/p/original/**" },
+      "/proxy/**": { proxy: "https://image.tmdb.org/t/p/w500/**" },
     },
   },
 
