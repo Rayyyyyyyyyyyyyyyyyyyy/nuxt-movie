@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getMovieApi } from "~/path/to/api";
-import type { TActorCast, TMovieDetail } from "~/types/apiType";
+import { getTMDBApi } from "~/path/to/api";
+import type { TMovieDetail } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();
@@ -27,7 +27,7 @@ if (import.meta.client) {
   }
 }
 
-const movieDetailRes = (await getMovieApi(`movie/${movieId}`, {
+const movieDetailRes = (await getTMDBApi(`movie/${movieId}`, {
   append_to_response:
     "videos,credits,images,external_ids,release_dates,combined_credits",
   include_image_language: "en",
@@ -61,30 +61,4 @@ cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
   </el-tabs>
 </template>
 
-<style lang="scss" scoped>
-.tab-content {
-  ::v-deep() {
-    .el-tabs__nav-wrap {
-      &:after {
-        @apply bg-transparent;
-      }
-
-      .el-tabs__nav-scroll {
-        @apply flex justify-center items-center;
-
-        .el-tabs__item {
-          @apply text-3xl;
-        }
-
-        .el-tabs__active-bar {
-          @apply bg-white;
-        }
-
-        .is-active {
-          @apply text-white;
-        }
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

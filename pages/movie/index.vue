@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMovieApi } from "~/path/to/api";
+import { getTMDBApi } from "~/path/to/api";
 import { EApiPaths } from "~/consts/apiConst";
 import type { TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
@@ -22,7 +22,7 @@ const state = reactive({
 });
 
 const getSliderList = async () => {
-  const sliderRes = (await getMovieApi(EApiPaths.popularList, {
+  const sliderRes = (await getTMDBApi(EApiPaths.popularList, {
     page: 1,
   })) as TMovieListRes<TMovieITem>;
 
@@ -34,7 +34,7 @@ const getSliderList = async () => {
 getSliderList();
 
 const getRateList = async () => {
-  const rateRes = (await getMovieApi(EApiPaths.topRateList, {
+  const rateRes = (await getTMDBApi(EApiPaths.topRateList, {
     page: 1,
   })) as TMovieListRes<TMovieITem>;
   const cloneRateData = AppUtils.deepCloneData(rateRes.results) as TMovieITem[];
@@ -43,7 +43,7 @@ const getRateList = async () => {
 getRateList();
 
 const getComingList = async () => {
-  const comingRes = (await getMovieApi(EApiPaths.upComingList, {
+  const comingRes = (await getTMDBApi(EApiPaths.upComingList, {
     page: 1,
   })) as TMovieListRes<TMovieITem>;
   const cloneComingData = AppUtils.deepCloneData(
@@ -54,7 +54,7 @@ const getComingList = async () => {
 getComingList();
 
 const getNowPlayingList = async () => {
-  const nowPlayingRes = (await getMovieApi(EApiPaths.nowPlaying, {
+  const nowPlayingRes = (await getTMDBApi(EApiPaths.nowPlaying, {
     page: 1,
   })) as TMovieListRes<TMovieITem>;
   const cloneNowPlayData = AppUtils.deepCloneData(

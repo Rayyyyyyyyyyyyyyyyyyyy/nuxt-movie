@@ -1,0 +1,24 @@
+
+.tab-content {
+  .el-tabs__nav-wrap {
+    &:after {
+      @apply bg-transparent;
+    }
+
+    .el-tabs__nav-scroll {
+      @apply flex justify-center items-center;
+
+      .el-tabs__item {
+        @apply text-3xl;
+      }
+
+      .el-tabs__active-bar {
+        @apply bg-white;
+      }
+
+      .is-active {
+        @apply text-white;
+      }
+    }
+  }
+}

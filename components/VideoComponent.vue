@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMovieApi } from "~/path/to/api";
+import { getTMDBApi } from "~/path/to/api";
 import { TMovieDetail, TMovieListRes, TRecommendItem } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
@@ -22,12 +22,9 @@ const state = reactive({
 const movieDetailRes: TMovieDetail = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
-const result = (await getMovieApi(
-  `movie/${movieDetailRes.id}/recommendations`,
-  {
-    page: 1,
-  },
-)) as TMovieListRes<TRecommendItem[]>;
+const result = (await getTMDBApi(`movie/${movieDetailRes.id}/recommendations`, {
+  page: 1,
+})) as TMovieListRes<TRecommendItem>;
 const cloneMovieList = AppUtils.deepCloneData(
   result.results,
 ) as TRecommendItem[];

@@ -4,7 +4,6 @@ import {
   type TActorCast,
   type TActorCrew,
   TExternal,
-  type TGenresItem,
   TMovieDetail,
   TMovieListRes,
   type TOption,
@@ -12,7 +11,8 @@ import {
 } from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
-import { getMovieApi } from "~/path/to/api";
+import { getTMDBApi } from "~/path/to/api";
+import { ELink } from "~/consts/AppConst";
 
 const props = defineProps({
   movie_detail: {
@@ -29,9 +29,9 @@ const movieDetailRes: TMovieDetail = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
 const transformRunTime = (runMin: number) => {
+  if (runMin === 0) return "";
   let hours = Math.floor(runMin / 60); // 取得整數小時
   let remainingMinutes = runMin % 60; // 取得剩餘的分鐘
-
   return hours + "h " + remainingMinutes + "min";
 };
 
@@ -44,7 +44,6 @@ const setComma = (amountInt: number) => {
 
 const state = reactive({
   directer: {} as TActorCrew,
-  genresList: [] as TGenresItem[],
   mapList: [] as TOption[],
   actorList: [] as TActorCast[],
 });
@@ -60,7 +59,6 @@ const getCreator = () => {
   }
 };
 const getGenres = () => {
-  state.genresList = movieDetailRes.genres;
   return movieDetailRes.genres;
 };
 
@@ -85,15 +83,12 @@ const getProductionCompanies = () => {
   return nameList.join();
 };
 
-const leftTagClickFun = () => {};
-const rightTagClickFun = () => {};
-
-enum ELink {
-  twitter_id = "https://x.com/",
-  facebook_id = "https://www.facebook.com/",
-  instagram_id = "https://www.instagram.com/",
-  imdb_id = "https://www.imdb.com/title/",
-}
+const leftTagClickFun = () => {
+  router.push(`/person/${state.directing.id}`);
+};
+const rightTagClickFun = (genreID: string) => {
+  router.push(`/genre/${genreID}`);
+};
 
 const setMovieLink = () => {
   const cloneObj = AppUtils.deepCloneData(
@@ -114,21 +109,19 @@ const setMovieActorName = () => {
   const cloneObj = AppUtils.deepCloneData(
     movieDetailRes.credits.cast,
   ) as TActorCast[];
-  cloneObj.forEach((item) => {
+  const gotAvatarActor = cloneObj.filter((item) => item.profile_path);
+  gotAvatarActor.forEach((item) => {
     item.nickName = item.original_name;
     item.title = item.name;
     item.posterUrl = `${props.origin_href}/proxy${item.profile_path}`;
   });
-  state.actorList = cloneObj;
+  state.actorList = gotAvatarActor;
 };
 setMovieActorName();
 
-const result = (await getMovieApi(
-  `movie/${movieDetailRes.id}/recommendations`,
-  {
-    page: 1,
-  },
-)) as TMovieListRes<TRecommendItem[]>;
+const result = (await getTMDBApi(`movie/${movieDetailRes.id}/recommendations`, {
+  page: 1,
+})) as TMovieListRes<TRecommendItem>;
 const cloneMovieList = AppUtils.deepCloneData(
   result.results,
 ) as TRecommendItem[];
@@ -143,7 +136,7 @@ const movieClickFun = (movieID: string) => {
 };
 
 const actorClickFun = (actorId: string) => {
-  console.log("actorId", actorId);
+  router.push(`/person/${actorId}`);
 };
 </script>
 
@@ -179,6 +172,7 @@ const actorClickFun = (actorId: string) => {
           :value_1="setComma(movieDetailRes.revenue)"
           :tag_list="getGenres()"
           :use_right_tag="true"
+          @rightTagClickEmit="rightTagClickFun"
         />
         <DetailRow
           :label_1="$t('Status')"

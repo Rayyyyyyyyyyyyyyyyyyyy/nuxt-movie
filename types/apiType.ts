@@ -190,3 +190,89 @@ export type TImageDetail = {
   vote_count: number;
   width: number;
 };
+export type TProfileITem = {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+};
+
+export type TPersonCastITem = {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: "string";
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  character: string;
+  credit_id: "string";
+  order: number;
+  media_type: string;
+};
+export type TPersonCrewITem = {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  credit_id: string;
+  department: string;
+  job: string;
+  media_type: string;
+  name?: string;
+};
+export type TPersonnel = {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string;
+  deathday: string;
+  gender: number;
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string;
+  popularity: number;
+  profile_path: string;
+  images: {
+    profiles: TProfileITem[];
+  };
+  combined_credits: {
+    cast: TPersonCastITem[];
+    crew: TPersonCrewITem[];
+  };
+  external_ids: {
+    freebase_mid: string;
+    freebase_id: string;
+    imdb_id: string;
+    tvrage_id: string;
+    wikidata_id: string;
+    facebook_id: string;
+    instagram_id: string;
+    tiktok_id: string;
+    twitter_id: string;
+    youtube_id: string;
+  };
+};

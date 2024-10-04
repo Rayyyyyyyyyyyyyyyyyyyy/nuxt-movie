@@ -68,7 +68,7 @@ const movieDetailRes: TMovieDetail = props.movie_detail
     .black-box {
       @apply absolute top-0 right-0;
       @apply w-full h-full;
-      @apply bg-gradient-to-r from-black from-30%;
+      @apply bg-gradient-to-r from-black from-50%;
     }
 
     img {
