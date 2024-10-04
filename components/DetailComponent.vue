@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
 import { getTMDBApi } from "~/path/to/api";
-import { ELink } from "~/consts/AppConst";
+import { ELink, showIconLinkList } from "~/consts/AppConst";
 
 const props = defineProps({
   movie_detail: {
@@ -22,6 +22,10 @@ const props = defineProps({
   origin_href: {
     type: String,
     default: "http://localhost:3000",
+  },
+  prop_type: {
+    type: String,
+    default: "movie",
   },
 });
 
@@ -86,8 +90,8 @@ const getProductionCompanies = () => {
 const leftTagClickFun = () => {
   router.push(`/person/${state.directing.id}`);
 };
-const rightTagClickFun = (genreID: string) => {
-  router.push(`/genre/${genreID}`);
+const rightTagClickFun = () => {
+  return;
 };
 
 const setMovieLink = () => {
@@ -95,7 +99,7 @@ const setMovieLink = () => {
     movieDetailRes.external_ids,
   ) as TExternal;
   Object.keys(cloneObj).forEach((name, ind) => {
-    if (name !== "wikidata_id" && Object.values(cloneObj)[ind]) {
+    if (showIconLinkList.includes(name) && Object.values(cloneObj)[ind]) {
       state.mapList.push({
         label: name.split("_")[0],
         value: `${ELink[name]}${Object.values(cloneObj)[ind]}`,
@@ -119,9 +123,12 @@ const setMovieActorName = () => {
 };
 setMovieActorName();
 
-const result = (await getTMDBApi(`movie/${movieDetailRes.id}/recommendations`, {
-  page: 1,
-})) as TMovieListRes<TRecommendItem>;
+const result = (await getTMDBApi(
+  `${props.prop_type}/${movieDetailRes.id}/recommendations`,
+  {
+    page: 1,
+  },
+)) as TMovieListRes<TRecommendItem>;
 const cloneMovieList = AppUtils.deepCloneData(
   result.results,
 ) as TRecommendItem[];
@@ -132,7 +139,7 @@ cloneMovieList.forEach((item) => {
 
 const router = useRouter();
 const movieClickFun = (movieID: string) => {
-  router.push(`/movie/${movieID}`);
+  router.push(`/${props.prop_type}/${movieID}`);
 };
 
 const actorClickFun = (actorId: string) => {
@@ -151,7 +158,7 @@ const actorClickFun = (actorId: string) => {
     </div>
 
     <div class="detail-link">
-      <div class="detail">
+      <div class="detail" v-if="prop_type === 'movie'">
         <DetailRow
           :label_1="$t('Release Date')"
           :label_2="$t('Runtime')"
@@ -185,6 +192,23 @@ const actorClickFun = (actorId: string) => {
           :value_1="getProductionCompanies()"
         />
       </div>
+
+      <div class="detail" v-if="prop_type === 'tv'">
+        <DetailRow
+          :label_1="$t('Status')"
+          :label_2="$t('Language')"
+          :value_1="movieDetailRes.status"
+          :value_2="getLangFullName(movieDetailRes.original_language)"
+        />
+        <DetailRow
+          :label_1="$t('Production')"
+          :value_1="getProductionCompanies()"
+          :label_2="$t('Genre')"
+          :tag_list="getGenres()"
+          :use_right_tag="true"
+        />
+      </div>
+
       <div class="link">
         <NuxtLink
           target="_blank"

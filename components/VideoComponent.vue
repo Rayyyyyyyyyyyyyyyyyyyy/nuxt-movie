@@ -12,6 +12,10 @@ const props = defineProps({
     type: String,
     default: "http://localhost:3000",
   },
+  prop_type: {
+    type: String,
+    default: "movie",
+  },
 });
 
 const state = reactive({
@@ -22,9 +26,12 @@ const state = reactive({
 const movieDetailRes: TMovieDetail = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
-const result = (await getTMDBApi(`movie/${movieDetailRes.id}/recommendations`, {
-  page: 1,
-})) as TMovieListRes<TRecommendItem>;
+const result = (await getTMDBApi(
+  `${props.prop_type}/${movieDetailRes.id}/recommendations`,
+  {
+    page: 1,
+  },
+)) as TMovieListRes<TRecommendItem>;
 const cloneMovieList = AppUtils.deepCloneData(
   result.results,
 ) as TRecommendItem[];
@@ -35,7 +42,7 @@ cloneMovieList.forEach((item) => {
 const router = useRouter();
 
 const movieClickFun = (movieID: string) => {
-  router.push(`/movie/${movieID}`);
+  router.push(`/${props.prop_type}/${movieID}`);
 };
 const videoCount = movieDetailRes.videos.results.length;
 const videoList = movieDetailRes.videos.results;

@@ -6,4 +6,11 @@ export enum EApiPaths {
   movieGener = "discover/movie",
   generMovieList = "genre/movie/list",
   personDetail = "person/",
+
+  tvPopularList = "tv/popular",
+  tvTopRateList = "/tv/top_rated",
+  tvAriring = "tv/airing_today",
+  tvOnAir = "tv/on_the_air",
+
+  search = "search/multi",
 }

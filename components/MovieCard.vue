@@ -33,7 +33,9 @@ const onCardClick = () => {
 <template>
   <el-tooltip class="box-item" effect="dark" placement="top-start">
     <template #content
-      ><p class="text-xl">{{ movieDetailRes.title }}</p></template
+      ><p class="text-xl">
+        {{ movieDetailRes.title || movieDetailRes.name }}
+      </p></template
     >
     <div class="movie-card" @click="onCardClick">
       <NuxtImg
@@ -43,7 +45,7 @@ const onCardClick = () => {
       />
 
       <div class="name-rate">
-        <p class="name">{{ movieDetailRes.title }}</p>
+        <p class="name">{{ movieDetailRes.title || movieDetailRes.name }}</p>
 
         <el-rate
           v-model="movieDetailRes.moveRate"
@@ -75,7 +77,7 @@ const onCardClick = () => {
     @apply flex flex-col;
 
     .name {
-      @apply truncate text-base;
+      @apply truncate text-base text-white;
     }
   }
 }

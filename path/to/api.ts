@@ -1,5 +1,6 @@
 import { hash as ohash } from "ohash";
 import { LRUCache } from "lru-cache";
+import { EApiPaths } from "~/consts/apiConst";
 
 const promiseCache = new LRUCache<string, any>({
   max: 500,

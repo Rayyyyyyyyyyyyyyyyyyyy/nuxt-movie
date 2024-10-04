@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import SvgIcon from "~/components/SvgIcon.vue";
-
 const route = useRoute();
 const isActive = (linkName: string) => {
   return route.path.includes(linkName);

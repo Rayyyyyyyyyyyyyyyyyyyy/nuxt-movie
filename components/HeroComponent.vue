@@ -12,7 +12,7 @@ const props = defineProps({
     default: "http://localhost:3000",
   },
 });
-const movieDetailRes: TMovieDetail = props.movie_detail
+const movieDetailRes = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
 </script>
@@ -29,7 +29,7 @@ const movieDetailRes: TMovieDetail = props.movie_detail
     </div>
 
     <div class="movie-outline" data-aos="fade-up">
-      <p class="title">{{ movieDetailRes.title }}</p>
+      <p class="title">{{ movieDetailRes.title || movieDetailRes.name }}</p>
       <div class="rate-point">
         <el-rate
           v-if="movieDetailRes.moveRate"

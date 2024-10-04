@@ -7,10 +7,10 @@ const props = defineProps({
     default: [],
   },
 });
-const router = useRouter();
 
-const goDetail = (movieID: string) => {
-  router.push(`/movie/${movieID}`);
+const emits = defineEmits(["onItemClickEmit"]);
+const goDetail = (itemId: string) => {
+  emits("onItemClickEmit", itemId);
 };
 </script>
 
@@ -54,7 +54,7 @@ const goDetail = (movieID: string) => {
 <style lang="scss" scoped>
 .carousel-item {
   @apply text-white;
-  @apply relative;
+  @apply relative cursor-pointer;
 
   .img-box {
     height: 600px;

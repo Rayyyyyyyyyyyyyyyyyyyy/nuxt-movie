@@ -3,17 +3,14 @@ import { getTMDBApi } from "~/path/to/api";
 import { EApiPaths } from "~/consts/apiConst";
 import {
   TExternal,
-  TMovieITem,
-  TMovieListRes,
   TOption,
   TPersonCastITem,
   TPersonCrewITem,
   TPersonnel,
   TProfileITem,
-  TRecommendItem,
 } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
-import { ELink } from "~/consts/AppConst";
+import { ELink, showIconLinkList } from "~/consts/AppConst";
 import dayjs from "dayjs";
 
 const route = useRoute();
@@ -40,12 +37,7 @@ const genreRes: TPersonnel = await getTMDBApi(
 const setMovieLink = () => {
   const cloneObj = AppUtils.deepCloneData(genreRes.external_ids) as TExternal;
   let optionList = [] as TOption[];
-  const showIconLinkList = [
-    "twitter_id",
-    "facebook_id",
-    "instagram_id",
-    "imdb_id",
-  ];
+
   Object.keys(cloneObj).forEach((name, ind) => {
     if (showIconLinkList.includes(name) && Object.values(cloneObj)[ind]) {
       optionList.push({

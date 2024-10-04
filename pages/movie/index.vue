@@ -72,7 +72,10 @@ const imageClickFun = (movieID: string) => {
 </script>
 
 <template>
-  <SliderComponent :carousel_list="state.afterSetSliderList" />
+  <SliderComponent
+    :carousel_list="state.afterSetSliderList"
+    @onItemClickEmit="imageClickFun"
+  />
   <div class="p-10">
     <ScrollComponent
       :scroll_title="$t('Top Rated Movies')"

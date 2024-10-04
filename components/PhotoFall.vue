@@ -134,7 +134,7 @@ const openPhotoDialog = (nowIndex: number) => {
       min-height: 550px;
     }
     .el-carousel__indicators--outside {
-      @apply bg-black;
+      @apply hidden;
     }
   }
 }
