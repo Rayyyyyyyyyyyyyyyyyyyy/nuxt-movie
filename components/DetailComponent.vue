@@ -90,8 +90,8 @@ const getProductionCompanies = () => {
 const leftTagClickFun = () => {
   router.push(`/person/${state.directing.id}`);
 };
-const rightTagClickFun = () => {
-  return;
+const rightTagClickFun = (genreID: string) => {
+  router.push(`/genre/${genreID}`);
 };
 
 const setMovieLink = () => {
