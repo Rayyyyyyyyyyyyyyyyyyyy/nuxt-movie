@@ -100,7 +100,8 @@ const loadSearch = () => {
     @apply w-full relative;
 
     .search-icon {
-      @apply absolute top-6 left-6 text-white z-10 text-3xl;
+      @apply absolute top-6 left-6 text-white z-10 ;
+      @apply text-3xl;
     }
 
     .search-input {
