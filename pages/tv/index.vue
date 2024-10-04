@@ -5,10 +5,15 @@ import type { TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 import { TMovieITem } from "~/types/apiType";
 
+let originHref = "http://localhost:3000";
+
+if (import.meta.client) {
+  originHref = location.origin;
+}
 const setBackdropUrl = (arr: TMovieITem[]) => {
   arr.forEach(async (item) => {
-    item.backdropUrl = `${location.origin}/proxy${item.backdrop_path}`;
-    item.posterUrl = `${location.origin}/proxy${item.poster_path}`;
+    item.backdropUrl = `${originHref}/proxy${item.backdrop_path}`;
+    item.posterUrl = `${originHref}/proxy${item.poster_path}`;
     item.moveRate = item.vote_average.toFixed(1) / 2;
   });
   return arr;
