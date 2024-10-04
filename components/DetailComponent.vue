@@ -254,6 +254,9 @@ const actorClickFun = (actorId: string) => {
     @apply w-80;
     @apply border-4 border-primary/100;
     @apply rounded;
+    img {
+      @apply w-full;
+    }
   }
   .detail-link {
     @apply w-full h-full flex-1;

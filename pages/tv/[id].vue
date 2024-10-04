@@ -13,9 +13,9 @@ const state = reactive({
   detailData: {} as TMovieDetail,
   movieID: "",
 });
-
+const url = useRequestURL();
 if (import.meta.client) {
-  originHref = location.origin;
+  originHref = url.origin;
 
   if (state.movieID !== movieId) {
     const heroId = document.querySelector("#heroBlock");

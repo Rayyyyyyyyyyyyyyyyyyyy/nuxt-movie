@@ -49,8 +49,10 @@ const movieDetailRes = props.movie_detail
         </p>
       </div>
 
-      <p class="title">{{ $t("Storyline") }}</p>
-      <p class="overview">{{ movieDetailRes.overview }}</p>
+      <div v-if="movieDetailRes.overview !== ''">
+        <p class="title">{{ $t("Storyline") }}</p>
+        <p class="overview">{{ movieDetailRes.overview }}</p>
+      </div>
     </div>
   </div>
 </template>

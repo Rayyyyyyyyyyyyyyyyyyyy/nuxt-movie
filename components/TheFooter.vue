@@ -57,7 +57,7 @@ const updateLocale = (value) => {
       <NuxtLink
         class="mr-4"
         target="_blank"
-        to="https://github.com/Rayyyyyyyyyyyyyyyyyyyy?tab=repositories"
+        to="https://github.com/Rayyyyyyyyyyyyyyyyyyyy/nuxt-init/tree/dev"
       >
         <nuxt-icon name="github" filled />
       </NuxtLink>

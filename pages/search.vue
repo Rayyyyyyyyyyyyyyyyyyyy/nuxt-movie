@@ -12,9 +12,10 @@ const state = reactive({
   noMore: false,
 });
 let originHref = "http://localhost:3000";
+const url = useRequestURL();
 
 if (import.meta.client) {
-  originHref = location.origin;
+  originHref = url.origin;
 }
 
 const doFetchKeyword = async (isSearch: boolean = true) => {
@@ -100,7 +101,7 @@ const loadSearch = () => {
     @apply w-full relative;
 
     .search-icon {
-      @apply absolute top-6 left-6 text-white z-10 ;
+      @apply absolute top-6 left-6 text-white z-10;
       @apply text-3xl;
     }
 

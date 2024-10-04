@@ -61,6 +61,9 @@ const goDetail = (itemId: string) => {
     @apply flex items-center justify-center;
     @apply absolute right-0 top-0;
     @apply z-0 w-3/5;
+    img {
+      @apply w-full;
+    }
 
     @media screen and (max-width: 1024px) {
       @apply w-full;

@@ -14,9 +14,10 @@ const state = reactive({
   genreName: "",
   movieList: [] as TMovieITem[],
 });
+const url = useRequestURL();
 
 if (import.meta.client) {
-  originHref = location.origin;
+  originHref = url.origin;
 }
 
 const genreRes = (await getTMDBApi(EApiPaths.generMovieList, {})) as {

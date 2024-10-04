@@ -6,9 +6,10 @@ import AppUtils from "~/utils/appUtils";
 import { TMovieITem } from "~/types/apiType";
 
 let originHref = "http://localhost:3000";
+const url = useRequestURL();
 
 if (import.meta.client) {
-  originHref = location.origin;
+  originHref = url.origin;
 }
 const setBackdropUrl = (arr: TMovieITem[]) => {
   arr.forEach(async (item) => {
