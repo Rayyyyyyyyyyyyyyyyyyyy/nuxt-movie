@@ -15,12 +15,9 @@ import dayjs from "dayjs";
 
 const route = useRoute();
 const personId = route.params.id;
-let originHref = "http://localhost:3000";
-const url = useRequestURL();
 
-if (import.meta.client) {
-  originHref = url.origin;
-}
+const url = useRequestURL();
+const originHref = url.origin;
 
 const state = reactive({
   activeName: "know",

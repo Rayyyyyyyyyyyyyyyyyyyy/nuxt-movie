@@ -11,12 +11,9 @@ const state = reactive({
   loading: false,
   noMore: false,
 });
-let originHref = "http://localhost:3000";
 const url = useRequestURL();
 
-if (import.meta.client) {
-  originHref = url.origin;
-}
+const originHref = url.origin;
 
 const doFetchKeyword = async (isSearch: boolean = true) => {
   if (!state.noMore) {

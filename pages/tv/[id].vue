@@ -5,18 +5,15 @@ import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();
 const movieId = route.params.id;
-
-let originHref = "http://localhost:3000";
+const url = useRequestURL();
+const originHref = url.origin;
 
 const state = reactive({
   activeName: "overView",
   detailData: {} as TMovieDetail,
   movieID: "",
 });
-const url = useRequestURL();
 if (import.meta.client) {
-  originHref = url.origin;
-
   if (state.movieID !== movieId) {
     const heroId = document.querySelector("#heroBlock");
     if (heroId) {

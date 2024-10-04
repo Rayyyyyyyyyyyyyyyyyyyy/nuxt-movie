@@ -5,12 +5,9 @@ import type { TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 import { TMovieITem } from "~/types/apiType";
 
-let originHref = "http://localhost:3000";
 const url = useRequestURL();
 
-if (import.meta.client) {
-  originHref = url.origin;
-}
+const originHref = url.origin;
 const setBackdropUrl = (arr: TMovieITem[]) => {
   arr.forEach(async (item) => {
     item.backdropUrl = `${originHref}/proxy${item.backdrop_path}`;

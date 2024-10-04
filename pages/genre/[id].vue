@@ -7,7 +7,6 @@ import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();
 const genreId = route.params.id;
-let originHref = "http://localhost:3000";
 
 const state = reactive({
   page: 1,
@@ -16,9 +15,7 @@ const state = reactive({
 });
 const url = useRequestURL();
 
-if (import.meta.client) {
-  originHref = url.origin;
-}
+const originHref = url.origin;
 
 const genreRes = (await getTMDBApi(EApiPaths.generMovieList, {})) as {
   genres: TGenresItem[];
