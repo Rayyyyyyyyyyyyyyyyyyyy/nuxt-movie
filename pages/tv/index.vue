@@ -4,24 +4,13 @@ import { EApiPaths } from "~/consts/apiConst";
 import type { TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 import { TMovieITem } from "~/types/apiType";
+import { MovieStore } from "~/stores/movieStore";
+import { TvStore } from "~/stores/tvStore";
 
-const url = useRequestURL();
-
-const originHref = url.origin;
-const setBackdropUrl = (arr: TMovieITem[]) => {
-  arr.forEach(async (item) => {
-    item.backdropUrl = `${originHref}/proxy${item.backdrop_path}`;
-    item.posterUrl = `${originHref}/proxy${item.poster_path}`;
-    item.moveRate = item.vote_average.toFixed(1) / 2;
-  });
-  return arr;
-};
+const tvStore = TvStore();
 
 const state = reactive({
   afterSetSliderList: [] as TMovieITem[],
-  afterSetRateList: [] as TMovieITem[],
-  afterSetComingList: [] as TMovieITem[],
-  afterSetPlayingList: [] as TMovieITem[],
 });
 
 const getSliderList = async () => {
@@ -32,40 +21,15 @@ const getSliderList = async () => {
   const cloneSliderData = AppUtils.deepCloneData(
     sliderRes.results,
   ) as TMovieITem[];
-  state.afterSetSliderList = setBackdropUrl(cloneSliderData);
+  state.afterSetSliderList = AppUtils.setRateNum(cloneSliderData);
 };
-getSliderList();
 
-const getRateList = async () => {
-  const rateRes = (await getTMDBApi(EApiPaths.tvPopularList, {
-    page: 1,
-  })) as TMovieListRes<TMovieITem>;
-  const cloneRateData = AppUtils.deepCloneData(rateRes.results) as TMovieITem[];
-  state.afterSetRateList = setBackdropUrl(cloneRateData);
-};
-getRateList();
-
-const getComingList = async () => {
-  const comingRes = (await getTMDBApi(EApiPaths.tvTopRateList, {
-    page: 1,
-  })) as TMovieListRes<TMovieITem>;
-  const cloneComingData = AppUtils.deepCloneData(
-    comingRes.results,
-  ) as TMovieITem[];
-  state.afterSetComingList = setBackdropUrl(cloneComingData);
-};
-getComingList();
-
-const getNowPlayingList = async () => {
-  const nowPlayingRes = (await getTMDBApi(EApiPaths.tvAriring, {
-    page: 1,
-  })) as TMovieListRes<TMovieITem>;
-  const cloneNowPlayData = AppUtils.deepCloneData(
-    nowPlayingRes.results,
-  ) as TMovieITem[];
-  state.afterSetPlayingList = setBackdropUrl(cloneNowPlayData);
-};
-getNowPlayingList();
+onMounted(() => {
+  getSliderList();
+  tvStore.getRateList(1);
+  tvStore.getComingList(1);
+  tvStore.getNowPlayingList(1);
+});
 
 const router = useRouter();
 
@@ -82,18 +46,24 @@ const imageClickFun = (itemId: string) => {
   <div class="p-10">
     <ScrollComponent
       :scroll_title="$t('Popular TV Shows')"
-      :scroll_list="state.afterSetRateList"
+      :scroll_list="tvStore.afterSetRateList"
       @imageClickEmit="imageClickFun"
+      list_type="popular"
+      page_type="tv"
     />
     <ScrollComponent
       :scroll_title="$t('Top Rated TV Shows')"
-      :scroll_list="state.afterSetComingList"
+      :scroll_list="tvStore.afterSetComingList"
       @imageClickEmit="imageClickFun"
+      list_type="top_rated"
+      page_type="tv"
     />
     <ScrollComponent
       :scroll_title="$t('TV Shows Airing Today')"
-      :scroll_list="state.afterSetPlayingList"
+      :scroll_list="tvStore.afterSetPlayingList"
       @imageClickEmit="imageClickFun"
+      list_type="airing_today"
+      page_type="tv"
     />
   </div>
 </template>

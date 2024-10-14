@@ -32,7 +32,7 @@ const getGenreMovie = async (page: number) => {
   })) as TMovieListRes<TMovieITem>;
   const cloneList = AppUtils.deepCloneData(res.results) as TMovieITem[];
   cloneList.forEach((item) => {
-    item.moveRate = item.vote_average.toFixed(1) / 2;
+    item.moveRate = AppUtils.transformRate(item.vote_average);
   });
   state.movieList = [...state.movieList, ...cloneList];
 };

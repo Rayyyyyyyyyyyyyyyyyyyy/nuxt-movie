@@ -32,6 +32,7 @@ export type TMovieITem = {
   backdropUrl?: string;
   posterUrl?: string;
   moveRate?: number;
+  nickName?: string;
 };
 
 export type TMovieDetail = {

@@ -16,7 +16,7 @@
     "@element-plus/icons-vue": "^2.3.1",
     "@nuxt/eslint": "^0.5.7",
     "@nuxt/image": "npm:@nuxt/image-nightly@latest",
-    "@pinia/nuxt": "^0.5.4",
+    "@pinia/nuxt": "^0.5.5",
     "@types/aos": "^3.0.7",
     "element-plus": "^2.8.3",
     "nuxt": "^3.13.0",

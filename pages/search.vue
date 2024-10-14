@@ -28,7 +28,7 @@ const doFetchKeyword = async (isSearch: boolean = true) => {
       const cloneList = AppUtils.deepCloneData(res.results);
       cloneList.forEach((item) => {
         if (item.vote_average) {
-          item.moveRate = item.vote_average.toFixed(1) / 2;
+          item.moveRate = AppUtils.transformRate(item.vote_average);
         }
       });
       const gotPhotoItemList = cloneList.filter((item) => item.poster_path);

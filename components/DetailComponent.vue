@@ -117,7 +117,6 @@ const setMovieActorName = () => {
   gotAvatarActor.forEach((item) => {
     item.nickName = item.original_name;
     item.title = item.name;
-    item.posterUrl = `${props.origin_href}/proxy${item.profile_path}`;
   });
   state.actorList = gotAvatarActor;
 };
@@ -133,8 +132,7 @@ const cloneMovieList = AppUtils.deepCloneData(
   result.results,
 ) as TRecommendItem[];
 cloneMovieList.forEach((item) => {
-  item.posterUrl = `${props.origin_href}/proxy${item.poster_path}`;
-  item.moveRate = item.vote_average.toFixed(1) / 2;
+  item.moveRate = AppUtils.transformRate(item.vote_average);
 });
 
 const router = useRouter();
@@ -229,6 +227,7 @@ const actorClickFun = (actorId: string) => {
       :show_rate="false"
       :show_nickName="true"
       @imageClickEmit="actorClickFun"
+      page_type="actor"
     />
     <ScrollComponent
       :scroll_list="cloneMovieList"

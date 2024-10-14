@@ -20,18 +20,44 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  list_type: {
+    type: String,
+    default: "",
+  },
+  page_type: {
+    type: String,
+    default: "movie",
+  },
 });
 
-const emits = defineEmits(["imageClickEmit"]);
-const goDetail = (itemId: string) => {
+const url = useRequestURL();
+const originHref = url.origin;
+
+const emits = defineEmits(["imageClickEmit", "moreClickEmit"]);
+const goDetail = (itemId: number) => {
   emits("imageClickEmit", itemId);
+};
+const router = useRouter();
+
+const onMoreClick = () => {
+  router.push(`/${props.page_type}/category/${props.list_type}`);
+};
+
+const imgUrl = (item) => {
+  if (props.page_type === "actor") {
+    return `${originHref}/proxy${item.profile_path}`;
+  } else {
+    return `${originHref}/proxy${item.poster_path}`;
+  }
 };
 </script>
 
 <template>
   <el-row justify="space-between" align="bottom" class="title-row">
     <div class="title">{{ scroll_title }}</div>
-    <div class="show-more" v-if="show_more">{{ $t("Explore more") }}</div>
+    <div class="show-more" v-if="show_more" @click="onMoreClick">
+      {{ $t("Explore more") }}
+    </div>
   </el-row>
   <el-scrollbar>
     <div class="scrollbar-flex-content">
@@ -42,13 +68,13 @@ const goDetail = (itemId: string) => {
         :key="index"
       >
         <NuxtImg
-          :src="item.posterUrl"
+          :src="imgUrl(item)"
           alt=""
           format="webp"
           class="scroll-item_image"
         />
 
-        <p class="item-name">{{ item.title }}</p>
+        <p class="item-name">{{ item.title || item.name }}</p>
         <el-rate
           v-if="show_rate"
           v-model="item.moveRate"
@@ -72,7 +98,7 @@ const goDetail = (itemId: string) => {
   @apply text-3xl;
 }
 .show-more {
-  @apply text-white/40;
+  @apply text-white/40 cursor-pointer;
 }
 .scrollbar-flex-content {
   @apply flex;

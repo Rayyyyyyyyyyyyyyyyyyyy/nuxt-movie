@@ -8,6 +8,9 @@ const props = defineProps({
   },
 });
 
+const url = useRequestURL();
+const originHref = url.origin;
+
 const emits = defineEmits(["onItemClickEmit"]);
 const goDetail = (itemId: string) => {
   emits("onItemClickEmit", itemId);
@@ -23,10 +26,14 @@ const goDetail = (itemId: string) => {
     >
       <div class="carousel-item">
         <div class="img-box">
-          <NuxtImg :src="item.backdropUrl" alt="" format="webp" />
+          <NuxtImg
+            :src="`${originHref}/proxy${item.backdrop_path}`"
+            alt=""
+            format="webp"
+          />
         </div>
         <div class="context">
-          <p class="title">{{ item.title }}</p>
+          <p class="title">{{ item.title || item.name }}</p>
           <div class="movie-detail">
             <el-rate
               v-model="item.moveRate"

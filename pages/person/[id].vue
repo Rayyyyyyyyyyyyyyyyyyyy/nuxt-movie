@@ -57,7 +57,7 @@ setMovieLink();
 const sortData = (arr) => {
   const gotUrPathData = arr.filter((item) => item.poster_path);
   gotUrPathData.forEach((item) => {
-    item.moveRate = item.vote_average.toFixed(1) / 2;
+    item.moveRate = AppUtils.transformRate(item.vote_average);
   });
   return gotUrPathData.sort(
     (x, y) => new Date(y.release_date) - new Date(x.release_date),

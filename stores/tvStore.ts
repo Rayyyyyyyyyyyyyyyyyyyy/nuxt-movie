@@ -4,15 +4,15 @@ import { EApiPaths } from "~/consts/apiConst";
 import type { TMovieITem, TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
-export const MovieStore = defineStore("movieStore", {
+export const TvStore = defineStore("tvStore", {
   state: () => ({
-    afterSetComingList: [] as TMovieITem[],
     afterSetRateList: [] as TMovieITem[],
+    afterSetComingList: [] as TMovieITem[],
     afterSetPlayingList: [] as TMovieITem[],
   }),
   actions: {
     async getRateList(page: number) {
-      const rateRes = (await getTMDBApi(EApiPaths.topRateList, {
+      const rateRes = (await getTMDBApi(EApiPaths.tvPopularList, {
         page: page,
       })) as TMovieListRes<TMovieITem>;
       const cloneRateData = AppUtils.deepCloneData(
@@ -22,7 +22,7 @@ export const MovieStore = defineStore("movieStore", {
     },
 
     async getComingList(page: number) {
-      const comingRes = (await getTMDBApi(EApiPaths.upComingList, {
+      const comingRes = (await getTMDBApi(EApiPaths.tvTopRateList, {
         page: page,
       })) as TMovieListRes<TMovieITem>;
       const cloneComingData = AppUtils.deepCloneData(
@@ -32,7 +32,7 @@ export const MovieStore = defineStore("movieStore", {
     },
 
     async getNowPlayingList(page: number) {
-      const nowPlayingRes = (await getTMDBApi(EApiPaths.nowPlaying, {
+      const nowPlayingRes = (await getTMDBApi(EApiPaths.tvAriring, {
         page: page,
       })) as TMovieListRes<TMovieITem>;
       const cloneNowPlayData = AppUtils.deepCloneData(
