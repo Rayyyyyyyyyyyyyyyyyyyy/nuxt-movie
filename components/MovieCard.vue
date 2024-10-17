@@ -59,6 +59,7 @@ const onCardClick = () => {
           disabled
           show-score
           text-color="#ff9900"
+          class="rate-item"
           :score-template="`${movieDetailRes.vote_average} points`"
         />
       </div>
@@ -77,7 +78,7 @@ const onCardClick = () => {
 
   img {
     @apply w-full  object-contain;
-    height: 300px;
+    @apply h-5/6;
   }
   .name-rate {
     @apply mt-2;
@@ -85,6 +86,17 @@ const onCardClick = () => {
 
     .name {
       @apply truncate text-base text-white;
+    }
+  }
+}
+@media screen and (max-width: 1440px) {
+  .rate-item {
+    @apply flex-wrap;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .movie-card {
+    img {
     }
   }
 }

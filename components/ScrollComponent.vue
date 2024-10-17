@@ -111,7 +111,8 @@ const imgUrl = (item) => {
   @apply cursor-pointer;
 
   .scroll-item_image {
-    @apply w-56 h-80;
+    @apply w-full h-5/6;
+
     &:hover {
       @apply transition duration-150 ease-in-out;
       transform: scale(1.1);
@@ -122,6 +123,26 @@ const imgUrl = (item) => {
   }
   .nick-name {
     @apply text-white/60;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .title-row {
+    @apply mt-4;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    @apply text-2xl;
+  }
+
+  .scrollbar-demo-item {
+    @apply h-64 w-40;
+  }
+}
+@media screen and (max-width: 640px) {
+  .title {
+    @apply text-lg;
   }
 }
 </style>

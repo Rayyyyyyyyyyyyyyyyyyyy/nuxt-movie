@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps({
   page_title: {
     type: String,
@@ -19,7 +18,7 @@ const loadSearch = () => {
 </script>
 
 <template>
-  <div class="p-10">
+  <div class="page-wrapper">
     <p class="page-title">{{ page_title }}</p>
 
     <div
@@ -33,11 +32,42 @@ const loadSearch = () => {
 </template>
 
 <style scoped lang="scss">
-.page-title {
-  @apply text-white text-3xl mb-4;
-}
+.page-wrapper {
+  @apply p-10;
 
-.item-list {
-  @apply grid auto-rows-auto grid-cols-4 gap-4;
+  .page-title {
+    @apply text-white text-3xl mb-4;
+  }
+
+  .item-list {
+    @apply grid auto-rows-auto grid-cols-5 gap-4;
+  }
+
+  @media screen and (max-width: 1024px) {
+    @apply p-4;
+    .page-title {
+      @apply text-2xl;
+    }
+  }
+
+  @media screen and (max-width: 840px) {
+    .page-title {
+      @apply text-xl;
+    }
+    .item-list {
+      @apply grid-cols-4;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .item-list {
+      @apply grid-cols-3;
+    }
+  }
+  @media screen and (max-width: 520px) {
+    .item-list {
+      @apply grid-cols-2;
+    }
+  }
 }
 </style>

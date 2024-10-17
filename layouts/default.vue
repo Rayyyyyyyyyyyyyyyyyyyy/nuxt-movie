@@ -22,6 +22,10 @@
   @apply flex;
   @apply overflow-x-auto overflow-y-auto;
 
+  @media screen and (max-width: 768px) {
+    @apply flex-col-reverse;
+  }
+
   .main {
     @apply w-full h-full;
     @apply bg-black;

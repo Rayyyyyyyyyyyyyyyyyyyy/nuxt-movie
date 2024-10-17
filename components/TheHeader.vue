@@ -57,5 +57,12 @@ const isActive = (linkName: string) => {
   .active-icon {
     @apply text-success;
   }
+
+  @media screen and (max-width: 768px) {
+    a + a {
+      @apply mt-0 ml-10;
+    }
+    @apply flex-row;
+  }
 }
 </style>

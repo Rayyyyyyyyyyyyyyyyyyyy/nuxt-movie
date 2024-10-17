@@ -15,10 +15,35 @@ const emits = defineEmits(["onItemClickEmit"]);
 const goDetail = (itemId: string) => {
   emits("onItemClickEmit", itemId);
 };
+
+const state = reactive({
+  carouselH: "",
+});
+const getScreenW = () => {
+  if (window.innerWidth < 768) {
+    if (window.innerWidth < 640) {
+      state.carouselH = "300px";
+    } else {
+      state.carouselH = "450px";
+    }
+  } else {
+    state.carouselH = "600px";
+  }
+};
+onMounted(() => {
+  getScreenW();
+  setTimeout(() => {
+    window.addEventListener("resize", getScreenW);
+  }, 300);
+});
 </script>
 
 <template>
-  <el-carousel indicator-position="outside" :autoplay="false" height="600px">
+  <el-carousel
+    indicator-position="outside"
+    :autoplay="false"
+    :height="state.carouselH"
+  >
     <el-carousel-item
       v-for="(item, index) in carousel_list"
       :key="index"
@@ -71,9 +96,14 @@ const goDetail = (itemId: string) => {
     img {
       @apply w-full;
     }
-
     @media screen and (max-width: 1024px) {
       @apply w-full;
+    }
+    @media screen and (max-width: 768px) {
+      height: 450px;
+    }
+    @media screen and (max-width: 640px) {
+      height: 300px;
     }
   }
 
@@ -87,6 +117,29 @@ const goDetail = (itemId: string) => {
     }
     .movie-detail {
       @apply my-4;
+    }
+
+    @media screen and (max-width: 1024px) {
+      @apply top-0;
+      @apply w-full;
+      .overview {
+        @apply hidden;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .title {
+        @apply text-2xl;
+      }
+      .movie-detail {
+        @apply my-0;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  ::v-deep() {
+    .el-carousel__indicators--outside {
+      @apply hidden;
     }
   }
 }

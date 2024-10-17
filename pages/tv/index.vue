@@ -39,11 +39,13 @@ const imageClickFun = (itemId: string) => {
 </script>
 
 <template>
-  <SliderComponent
-    :carousel_list="state.afterSetSliderList"
-    @onItemClickEmit="imageClickFun"
-  />
-  <div class="p-10">
+  <Gridindex>
+    <template #slider>
+      <SliderComponent
+        :carousel_list="state.afterSetSliderList"
+        @onItemClickEmit="imageClickFun"
+      />
+    </template>
     <ScrollComponent
       :scroll_title="$t('Popular TV Shows')"
       :scroll_list="tvStore.afterSetPopularList"
@@ -65,5 +67,5 @@ const imageClickFun = (itemId: string) => {
       list_type="airing_today"
       page_type="tv"
     />
-  </div>
+  </Gridindex>
 </template>

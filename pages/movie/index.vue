@@ -39,11 +39,13 @@ const imageClickFun = (movieID: string) => {
 </script>
 
 <template>
-  <SliderComponent
-    :carousel_list="state.afterSetSliderList"
-    @onItemClickEmit="imageClickFun"
-  />
-  <div class="p-10">
+  <Gridindex>
+    <template #slider>
+      <SliderComponent
+        :carousel_list="state.afterSetSliderList"
+        @onItemClickEmit="imageClickFun"
+      />
+    </template>
     <ScrollComponent
       :scroll_title="$t('Now Playing Movies')"
       :scroll_list="movieStore.afterSetPlayingList"
@@ -62,5 +64,5 @@ const imageClickFun = (movieID: string) => {
       @imageClickEmit="imageClickFun"
       list_type="upcoming"
     />
-  </div>
+  </Gridindex>
 </template>
