@@ -91,21 +91,21 @@ const loadSearch = () => {
 
 <style lang="scss" scoped>
 .search {
-  @apply w-full;
+  @apply w-full h-full;
   @apply flex flex-col;
 
   .search-bar {
-    @apply w-full relative;
+    @apply w-3/4 relative;
 
     .search-icon {
-      @apply absolute top-6 left-6 text-white z-10;
+      @apply absolute top-1.5 left-4 text-white z-10;
       @apply text-3xl;
     }
 
     .search-input {
       ::v-deep() {
         .el-input__wrapper {
-          @apply bg-primary-dark h-20;
+          @apply bg-primary-dark h-10;
 
           .el-input__inner {
             @apply text-white text-2xl ml-14;
@@ -115,7 +115,7 @@ const loadSearch = () => {
     }
   }
   .search-content {
-    min-height: calc(100vh - 368px);
+    min-height: calc(100vh - 328px);
     @apply p-10;
     @apply grid auto-rows-auto grid-cols-4 gap-4;
 
