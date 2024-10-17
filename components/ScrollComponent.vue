@@ -135,6 +135,10 @@ const imgUrl = (item) => {
   .title {
     @apply text-2xl;
   }
+  .item-name,
+  .nick-name {
+    @apply text-sm;
+  }
 
   .scrollbar-demo-item {
     @apply h-64 w-40;

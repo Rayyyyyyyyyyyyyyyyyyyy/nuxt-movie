@@ -15,10 +15,30 @@ const props = defineProps({
 const movieDetailRes = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
+
+const state = reactive({
+  heroH: "",
+});
+const getScreenW = () => {
+  const fullH = window.innerHeight;
+  if (window.innerWidth < 1024) {
+    console.log("fullH", fullH);
+    state.heroH = `${fullH / 4}px`;
+  } else {
+    state.heroH = "600px";
+  }
+};
+
+onMounted(() => {
+  getScreenW();
+  setTimeout(() => {
+    window.addEventListener("resize", getScreenW);
+  }, 300);
+});
 </script>
 
 <template>
-  <div class="hero-block" id="heroBlock">
+  <div class="hero-block" id="heroBlock" :style="{ height: state.heroH }">
     <div class="img-box">
       <div class="black-box"></div>
       <NuxtImg
@@ -49,7 +69,7 @@ const movieDetailRes = props.movie_detail
         </p>
       </div>
 
-      <div v-if="movieDetailRes.overview !== ''">
+      <div v-if="movieDetailRes.overview !== ''" class="title-overview">
         <p class="title">{{ $t("Storyline") }}</p>
         <p class="overview">{{ movieDetailRes.overview }}</p>
       </div>
@@ -60,7 +80,6 @@ const movieDetailRes = props.movie_detail
 <style lang="scss" scoped>
 .hero-block {
   @apply text-white mb-6;
-  height: 600px;
   @apply relative;
 
   .img-box {
@@ -97,6 +116,56 @@ const movieDetailRes = props.movie_detail
     .overview {
       @apply my-4 text-white/70;
       @apply whitespace-pre-line;
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .hero-block {
+    .movie-outline {
+      @apply w-full top-4;
+    }
+  }
+}
+@media screen and (max-width: 840px) {
+  .hero-block {
+    .movie-outline {
+      .title {
+        @apply text-2xl;
+      }
+      .rate-count {
+        @apply text-sm;
+      }
+    }
+  }
+}
+@media screen and (max-width: 640px) {
+  .hero-block {
+    .movie-outline {
+      .title {
+        @apply text-xl;
+      }
+      .title-overview {
+        @apply text-sm;
+      }
+    }
+  }
+}
+@media screen and (max-width: 450px) {
+  .hero-block {
+    .movie-outline {
+      .title {
+        @apply text-xl #{!important};
+      }
+      .title-overview {
+        @apply hidden;
+      }
+      .rate-point {
+        @apply flex-col items-start text-sm;
+
+        .rate-count {
+          @apply block ml-0 w-full;
+        }
+      }
     }
   }
 }

@@ -241,7 +241,7 @@ const profileList = cloneList.map((item) => {
         @apply text-3xl mb-4;
       }
       .detail {
-        @apply opacity-60 text-sm;
+        @apply opacity-60 text-sm whitespace-pre-line;
       }
 
       .detail-row {
@@ -260,10 +260,25 @@ const profileList = cloneList.map((item) => {
         }
       }
     }
+
+    @media screen and (max-width: 640px) {
+      @apply flex flex-col;
+
+      .avatar {
+        @apply justify-start mb-4;
+      }
+    }
   }
 }
 .know-list {
   @apply grid auto-rows-auto grid-cols-4 mt-4;
+
+  @media screen and (max-width: 640px) {
+    @apply grid-cols-2;
+  }
+  @media screen and (max-width: 450px) {
+    @apply grid-cols-1;
+  }
 }
 .credit {
   @apply text-white;
@@ -299,6 +314,10 @@ const profileList = cloneList.map((item) => {
   }
   .photo-list {
     @apply grid auto-rows-auto grid-cols-4 gap-4;
+
+    @media screen and (max-width: 640px) {
+      @apply grid-cols-2;
+    }
 
     .image-item {
       &:hover {

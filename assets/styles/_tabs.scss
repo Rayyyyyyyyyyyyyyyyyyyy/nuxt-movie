@@ -10,6 +10,10 @@
 
       .el-tabs__item {
         @apply text-3xl;
+
+        @media screen and (max-width: 768px) {
+          @apply text-xl;
+        }
       }
 
       .el-tabs__active-bar {

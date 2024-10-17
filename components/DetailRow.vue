@@ -56,7 +56,7 @@ const onRightTagClick = (tagId: string) => {
       <p v-if="!use_right_tag" class="value">
         {{ value_2 }}
       </p>
-      <div v-if="use_right_tag" class="value tag-value">
+      <div v-if="use_right_tag" class="value">
         <el-button
           v-for="tag in tag_list"
           :key="tag.id"
@@ -79,6 +79,9 @@ const onRightTagClick = (tagId: string) => {
   @media screen and (max-width: 1440px) {
     @apply grid-cols-1 float-left;
   }
+  @media screen and (max-width: 768px) {
+    @apply w-full;
+  }
 }
 
 .item {
@@ -86,15 +89,14 @@ const onRightTagClick = (tagId: string) => {
 
   .label {
     @apply mr-2 text-right col-span-5;
-    @media screen and (max-width: 1440px) {
-      @apply col-span-3;
+
+    @media screen and (max-width: 450px) {
+      @apply col-span-4;
     }
   }
   .value {
     @apply ml-2;
     @apply flex col-span-7;
-  }
-  .tag-value {
   }
 }
 </style>

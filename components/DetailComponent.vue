@@ -242,10 +242,23 @@ const actorClickFun = (actorId: string) => {
 
 <style lang="scss" scoped>
 .movie-detail {
-  @apply flex items-start p-10 w-4/5 mx-auto;
+  @apply flex items-start p-10 w-4/5 mx-auto mt-4;
   height: 560px;
 
   @media screen and (max-width: 1440px) {
+    @apply w-full;
+  }
+  @media screen and (max-width: 1024px) {
+    @apply h-full;
+  }
+
+  @media screen and (max-width: 956px) {
+    @apply w-4/5 p-0;
+  }
+  @media screen and (max-width: 768px) {
+    @apply flex-col items-center justify-center;
+  }
+  @media screen and (max-width: 450px) {
     @apply w-full;
   }
 
@@ -256,12 +269,19 @@ const actorClickFun = (actorId: string) => {
     img {
       @apply w-full;
     }
+    @media screen and (max-width: 956px) {
+      @apply w-56;
+    }
   }
   .detail-link {
     @apply w-full h-full flex-1;
     @apply flex flex-col;
     @apply justify-between items-start;
     @apply pl-10;
+
+    @media screen and (max-width: 956px) {
+      @apply p-0;
+    }
   }
 
   .detail {
