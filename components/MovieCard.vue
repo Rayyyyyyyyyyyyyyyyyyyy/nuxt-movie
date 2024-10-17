@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TMovieDetail, TPersonCastITem } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
 const props = defineProps({
@@ -7,25 +6,33 @@ const props = defineProps({
     type: Object,
     default: {},
   },
-  origin_href: {
-    type: String,
-    default: "http://localhost:3000",
-  },
   item_type: {
     type: String,
     default: "movie",
   },
 });
+
+const url = useRequestURL();
+const originHref = url.origin;
+
 const movieDetailRes = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
 
 const router = useRouter();
 const onCardClick = () => {
-  if (movieDetailRes.media_type === "movie") {
-    router.push(`/movie/${movieDetailRes.id}`);
+  if (movieDetailRes.media_type) {
+    if (movieDetailRes.media_type === "movie") {
+      router.push(`/movie/${movieDetailRes.id}`);
+    } else {
+      router.push(`/tv/${movieDetailRes.id}`);
+    }
   } else {
-    router.push(`/tv/${movieDetailRes.id}`);
+    if (props.item_type === "movie") {
+      router.push(`/movie/${movieDetailRes.id}`);
+    } else {
+      router.push(`/tv/${movieDetailRes.id}`);
+    }
   }
 };
 </script>
@@ -39,7 +46,7 @@ const onCardClick = () => {
     >
     <div class="movie-card" @click="onCardClick">
       <NuxtImg
-        :src="`${origin_href}/proxy${movieDetailRes.poster_path}`"
+        :src="`${originHref}/proxy${movieDetailRes.poster_path}`"
         alt=""
         format="webp"
       />

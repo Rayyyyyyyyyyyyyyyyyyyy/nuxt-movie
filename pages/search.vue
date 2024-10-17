@@ -83,7 +83,7 @@ const loadSearch = () => {
         v-for="(item, ind) in state.itemList"
         :key="ind"
       >
-        <MovieCard :origin_href="originHref" :movie_detail="item" />
+        <MovieCard :movie_detail="item" />
       </div>
     </div>
   </div>

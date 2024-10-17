@@ -59,7 +59,7 @@ const loadMoreMovie = () => {
       :infinite-scroll-immediate="false"
     >
       <div class="movie-item" v-for="(item, ind) in state.movieList" :key="ind">
-        <MovieCard :origin_href="originHref" :movie_detail="item" />
+        <MovieCard :movie_detail="item" />
       </div>
     </div>
   </div>

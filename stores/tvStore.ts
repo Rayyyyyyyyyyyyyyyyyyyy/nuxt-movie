@@ -6,39 +6,64 @@ import AppUtils from "~/utils/appUtils";
 
 export const TvStore = defineStore("tvStore", {
   state: () => ({
+    afterSetPopularList: [] as TMovieITem[],
     afterSetRateList: [] as TMovieITem[],
-    afterSetComingList: [] as TMovieITem[],
-    afterSetPlayingList: [] as TMovieITem[],
+    afterSetAriringList: [] as TMovieITem[],
   }),
   actions: {
+    async getPopularList(page: number) {
+      const popularRes = (await getTMDBApi(EApiPaths.tvPopularList, {
+        page: page,
+      })) as TMovieListRes<TMovieITem>;
+      if (popularRes.results.length == 0) return;
+
+      const cloneData = AppUtils.deepCloneData(
+        popularRes.results,
+      ) as TMovieITem[];
+
+      if (page === 1) {
+        this.afterSetPopularList = AppUtils.setRateNum([...cloneData]);
+      } else {
+        const cloneList = AppUtils.deepCloneData(this.afterSetPopularList);
+        this.afterSetPopularList = AppUtils.setRateNum([
+          ...cloneList,
+          ...cloneData,
+        ]);
+      }
+    },
+
     async getRateList(page: number) {
-      const rateRes = (await getTMDBApi(EApiPaths.tvPopularList, {
+      const rateRes = (await getTMDBApi(EApiPaths.tvTopRateList, {
         page: page,
       })) as TMovieListRes<TMovieITem>;
-      const cloneRateData = AppUtils.deepCloneData(
-        rateRes.results,
-      ) as TMovieITem[];
-      this.afterSetRateList = AppUtils.setRateNum(cloneRateData);
+      const cloneData = AppUtils.deepCloneData(rateRes.results) as TMovieITem[];
+      if (page === 1) {
+        this.afterSetRateList = AppUtils.setRateNum([...cloneData]);
+      } else {
+        const cloneList = AppUtils.deepCloneData(this.afterSetRateList);
+        this.afterSetRateList = AppUtils.setRateNum([
+          ...cloneList,
+          ...cloneData,
+        ]);
+      }
     },
 
-    async getComingList(page: number) {
-      const comingRes = (await getTMDBApi(EApiPaths.tvTopRateList, {
+    async getAiringTodayList(page: number) {
+      const ariringRes = (await getTMDBApi(EApiPaths.tvAriring, {
         page: page,
       })) as TMovieListRes<TMovieITem>;
-      const cloneComingData = AppUtils.deepCloneData(
-        comingRes.results,
+      const cloneData = AppUtils.deepCloneData(
+        ariringRes.results,
       ) as TMovieITem[];
-      this.afterSetComingList = AppUtils.setRateNum(cloneComingData);
-    },
-
-    async getNowPlayingList(page: number) {
-      const nowPlayingRes = (await getTMDBApi(EApiPaths.tvAriring, {
-        page: page,
-      })) as TMovieListRes<TMovieITem>;
-      const cloneNowPlayData = AppUtils.deepCloneData(
-        nowPlayingRes.results,
-      ) as TMovieITem[];
-      this.afterSetPlayingList = AppUtils.setRateNum(cloneNowPlayData);
+      if (page === 1) {
+        this.afterSetAriringList = AppUtils.setRateNum([...cloneData]);
+      } else {
+        const cloneList = AppUtils.deepCloneData(this.afterSetAriringList);
+        this.afterSetAriringList = AppUtils.setRateNum([
+          ...cloneList,
+          ...cloneData,
+        ]);
+      }
     },
   },
 });

@@ -144,11 +144,7 @@ const profileList = cloneList.map((item) => {
       <el-tab-pane :label="$t('Known For')" name="know">
         <div class="know-list">
           <div class="know-item" v-for="(item, ind) in castList" :key="ind">
-            <MovieCard
-              :origin_href="originHref"
-              :movie_detail="item"
-              item_type="cast"
-            />
+            <MovieCard :movie_detail="item" item_type="cast" />
           </div>
         </div>
       </el-tab-pane>

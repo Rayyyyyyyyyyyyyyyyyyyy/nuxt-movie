@@ -26,9 +26,9 @@ const getSliderList = async () => {
 
 onMounted(() => {
   getSliderList();
+  tvStore.getPopularList(1);
   tvStore.getRateList(1);
-  tvStore.getComingList(1);
-  tvStore.getNowPlayingList(1);
+  tvStore.getAiringTodayList(1);
 });
 
 const router = useRouter();
@@ -46,21 +46,21 @@ const imageClickFun = (itemId: string) => {
   <div class="p-10">
     <ScrollComponent
       :scroll_title="$t('Popular TV Shows')"
-      :scroll_list="tvStore.afterSetRateList"
+      :scroll_list="tvStore.afterSetPopularList"
       @imageClickEmit="imageClickFun"
       list_type="popular"
       page_type="tv"
     />
     <ScrollComponent
       :scroll_title="$t('Top Rated TV Shows')"
-      :scroll_list="tvStore.afterSetComingList"
+      :scroll_list="tvStore.afterSetRateList"
       @imageClickEmit="imageClickFun"
       list_type="top_rated"
       page_type="tv"
     />
     <ScrollComponent
       :scroll_title="$t('TV Shows Airing Today')"
-      :scroll_list="tvStore.afterSetPlayingList"
+      :scroll_list="tvStore.afterSetAriringList"
       @imageClickEmit="imageClickFun"
       list_type="airing_today"
       page_type="tv"
