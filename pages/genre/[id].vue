@@ -42,41 +42,19 @@ const loadMoreMovie = () => {
   state.page++;
   getGenreMovie(state.page);
 };
+
+const i18n = useI18n();
+
+const pageTitle = i18n.t("Movies") + i18n.t("Genre") + ":" + state.genreName;
 </script>
 
 <template>
-  <div class="p-10">
-    <div class="genre-title">
-      <p>{{ $t("Movies") }}{{ $t("Genre") }}:</p>
-      <p class="ml-2">
-        {{ state.genreName }}
-      </p>
-    </div>
-
-    <div
-      class="movie-list"
-      v-infinite-scroll="loadMoreMovie"
-      :infinite-scroll-immediate="false"
-    >
-      <div class="movie-item" v-for="(item, ind) in state.movieList" :key="ind">
-        <MovieCard :movie_detail="item" />
-      </div>
-    </div>
-  </div>
+  <GridSlot @fetchListEmit="loadMoreMovie" :page_title="pageTitle">
+    <MovieCard
+      :movie_detail="item"
+      v-for="(item, ind) in state.movieList"
+      :key="ind"
+  /></GridSlot>
 </template>
 
-<style scoped lang="scss">
-.genre-title {
-  @apply flex items-center;
-  @apply text-white;
-  @apply text-2xl;
-}
-.movie-list {
-  @apply grid auto-rows-auto grid-cols-5 gap-4;
-  @apply mt-4;
-
-  .movie-item {
-    @apply text-white;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
