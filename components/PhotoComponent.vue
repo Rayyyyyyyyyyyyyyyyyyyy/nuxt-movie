@@ -33,6 +33,38 @@ const setImgUrl = (
 
 const backDropList = setImgUrl(movieDetailRes.images.backdrops);
 const posterList = setImgUrl(movieDetailRes.images.posters);
+
+const state = reactive({
+  backdropsSpan: "4",
+  postersSpan: "5",
+});
+const getScreenW = () => {
+  if (window.innerWidth < 1024) {
+    state.backdropsSpan = "3";
+    state.postersSpan = "4";
+    if (window.innerWidth < 768) {
+      state.backdropsSpan = "2";
+      state.postersSpan = "3";
+    }
+    if (window.innerWidth < 640) {
+      state.backdropsSpan = "2";
+      state.postersSpan = "2";
+    }
+    if (window.innerWidth < 450) {
+      state.backdropsSpan = "1";
+      state.postersSpan = "1";
+    }
+  } else {
+    state.backdropsSpan = "4";
+    state.postersSpan = "5";
+  }
+};
+onMounted(() => {
+  getScreenW();
+  setTimeout(() => {
+    window.addEventListener("resize", getScreenW);
+  }, 300);
+});
 </script>
 
 <template>
@@ -40,12 +72,12 @@ const posterList = setImgUrl(movieDetailRes.images.posters);
     <PhotoFall
       :fall_title="$t('Backdrops')"
       :image_list="backDropList"
-      :col_span="4"
+      :col_span="state.backdropsSpan"
     />
     <PhotoFall
       :fall_title="$t('Posters')"
       :image_list="posterList"
-      :col_span="5"
+      :col_span="state.postersSpan"
     />
   </div>
 </template>

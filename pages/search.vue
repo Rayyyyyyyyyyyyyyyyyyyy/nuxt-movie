@@ -118,6 +118,16 @@ const loadSearch = () => {
     min-height: calc(100vh - 368px);
     @apply p-10;
     @apply grid auto-rows-auto grid-cols-4 gap-4;
+
+    @media screen and (max-width: 768px) {
+      @apply grid-cols-3;
+    }
+    @media screen and (max-width: 640px) {
+      @apply grid-cols-2;
+    }
+    @media screen and (max-width: 450px) {
+      @apply grid-cols-1;
+    }
   }
 }
 </style>

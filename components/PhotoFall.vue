@@ -9,8 +9,8 @@ const props = defineProps({
     default: [],
   },
   col_span: {
-    type: Number,
-    default: 4,
+    type: String,
+    default: "4",
   },
 });
 const state = reactive({
@@ -36,13 +36,7 @@ const openPhotoDialog = (nowIndex: number) => {
       </p>
     </div>
 
-    <div
-      class="img-list"
-      :class="{
-        'grid-cols-4': col_span == 4,
-        'grid-cols-5': col_span == 5,
-      }"
-    >
+    <div class="img-list" :class="`grid-cols-${col_span}`">
       <div
         class="image-box"
         v-for="(item, ind) in image_list"

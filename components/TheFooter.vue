@@ -88,6 +88,10 @@ const updateLocale = (value) => {
   @apply flex flex-col items-start;
   @apply text-white;
 
+  @media screen and (max-width: 450px) {
+    @apply h-auto;
+  }
+
   .footer-text-sm {
     @apply text-sm text-white/40 leading-10;
   }
@@ -117,6 +121,10 @@ const updateLocale = (value) => {
     .lang {
       @apply ml-4;
       @apply flex items-center;
+
+      @media screen and (max-width: 450px) {
+        @apply ml-0;
+      }
 
       .lang-sel {
         @apply w-48 ml-4;

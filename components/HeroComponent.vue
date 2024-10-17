@@ -18,14 +18,16 @@ const movieDetailRes = props.movie_detail
 
 const state = reactive({
   heroH: "",
+  showTooltips: false,
 });
 const getScreenW = () => {
   const fullH = window.innerHeight;
   if (window.innerWidth < 1024) {
-    console.log("fullH", fullH);
+    state.showTooltips = true;
     state.heroH = `${fullH / 4}px`;
   } else {
     state.heroH = "600px";
+    state.showTooltips = false;
   }
 };
 
@@ -69,10 +71,25 @@ onMounted(() => {
         </p>
       </div>
 
-      <div v-if="movieDetailRes.overview !== ''" class="title-overview">
+      <div v-if="movieDetailRes.overview !== '' && !state.showTooltips">
         <p class="title">{{ $t("Storyline") }}</p>
         <p class="overview">{{ movieDetailRes.overview }}</p>
       </div>
+
+      <el-tooltip
+        v-if="state.showTooltips"
+        effect="dark"
+        placement="bottom"
+        popper-class="overview-tooltip"
+      >
+        <template #content>
+          <div v-if="movieDetailRes.overview !== ''">
+            <p class="title">{{ $t("Storyline") }}</p>
+            <p class="overview">{{ movieDetailRes.overview }}</p>
+          </div>
+        </template>
+        <nuxt-icon name="search" class="text-xl" />
+      </el-tooltip>
     </div>
   </div>
 </template>
@@ -144,9 +161,6 @@ onMounted(() => {
       .title {
         @apply text-xl;
       }
-      .title-overview {
-        @apply text-sm;
-      }
     }
   }
 }
@@ -156,9 +170,7 @@ onMounted(() => {
       .title {
         @apply text-xl #{!important};
       }
-      .title-overview {
-        @apply hidden;
-      }
+
       .rate-point {
         @apply flex-col items-start text-sm;
 
