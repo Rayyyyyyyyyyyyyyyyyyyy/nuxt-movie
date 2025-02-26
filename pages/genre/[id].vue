@@ -2,7 +2,7 @@
 import { getTMDBApi } from "~/path/to/api";
 import { EApiPaths } from "~/consts/apiConst";
 import type { TGenresItem } from "~/types/apiType";
-import { TMovieITem, TMovieListRes } from "~/types/apiType";
+import {type TMovieITem, type TMovieListRes } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 
 const route = useRoute();

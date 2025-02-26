@@ -3,11 +3,11 @@ import AppUtils from "~/utils/appUtils";
 import {
   type TActorCast,
   type TActorCrew,
-  TExternal,
-  TMovieDetail,
-  TMovieListRes,
+  type TExternal,
+  type TMovieDetail,
+  type TMovieListRes,
   type TOption,
-  TRecommendItem,
+  type TRecommendItem,
 } from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
@@ -54,7 +54,7 @@ const state = reactive({
 const getCreator = () => {
   const directing = movieDetailRes.credits.crew.find(
     (item) => item.department === "Directing",
-  );
+  ) as TActorCrew
   state.directing = directing;
   if (directing) {
     return directing.name;

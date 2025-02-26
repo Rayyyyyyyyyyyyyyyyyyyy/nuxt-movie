@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MovieStore } from "~/stores/movieStore";
-import { TvStore } from "~/stores/tvStore";
+import {MovieStore} from "~/stores/movieStore";
+import {TvStore} from "~/stores/tvStore";
 
 const movieStore = MovieStore();
 const tvStore = TvStore();
@@ -9,7 +9,9 @@ onMounted(() => {
   movieStore.getNowPlayingList(1);
   tvStore.getPopularList(1);
 });
-const router = useRouter();
+const router = useRouter()
+
+const {t} = useI18n()
 
 const imageClickFun = (itemID: string) => {
   router.push(`/movie/${itemID}`);
@@ -22,18 +24,18 @@ const tvImageClickFun = (itemId: string) => {
 <template>
   <div class="home-page">
     <ScrollComponent
-      :scroll_title="$t('Now Playing Movies')"
-      :scroll_list="movieStore.afterSetPlayingList"
-      @imageClickEmit="imageClickFun"
-      list_type="now_playing"
+        :scroll_title="t('Now Playing Movies')"
+        :scroll_list="movieStore.afterSetPlayingList"
+        list_type="now_playing"
+        @imageClickEmit="imageClickFun"
     />
 
     <ScrollComponent
-      :scroll_title="$t('Popular TV Shows')"
-      :scroll_list="tvStore.afterSetPopularList"
-      @imageClickEmit="tvImageClickFun"
-      list_type="popular"
-      page_type="tv"
+        :scroll_title="t('Popular TV Shows')"
+        :scroll_list="tvStore.afterSetPopularList"
+        list_type="popular"
+        page_type="tv"
+        @imageClickEmit="tvImageClickFun"
     />
   </div>
 </template>
