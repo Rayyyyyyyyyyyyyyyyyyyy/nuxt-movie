@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import {MovieStore} from "~/stores/movieStore";
 import {TvStore} from "~/stores/tvStore";
+// import { createClient } from '@supabase/supabase-js'
+// import {useRuntimeConfig} from "#imports";
+// const config = useRuntimeConfig();
 
 const movieStore = MovieStore();
 const tvStore = TvStore();
@@ -19,6 +22,12 @@ const imageClickFun = (itemID: string) => {
 const tvImageClickFun = (itemId: string) => {
   router.push(`/tv/${itemId}`);
 };
+
+//
+// const supabase = createClient(config.public.supaBaseUrl, config.public.supaBaseKey)
+// console.log(
+//     'supabase', supabase
+// )
 </script>
 
 <template>
