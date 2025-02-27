@@ -32,7 +32,7 @@ const movieDetailRes = (await getTMDBApi(`movie/${movieId}`, {
   include_image_language: "en",
 })) as TMovieDetail;
 const cloneDetailData = AppUtils.deepCloneData(movieDetailRes) as TMovieDetail;
-cloneDetailData["moveRate"] = movieDetailRes.vote_average.toFixed(1) / 2;
+cloneDetailData["moveRate"] = Number(movieDetailRes.vote_average.toFixed(1)) / 2;
 </script>
 
 <template>

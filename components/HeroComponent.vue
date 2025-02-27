@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
-import { TMovieDetail } from "~/types/apiType";
 
 const props = defineProps({
   movie_detail: {

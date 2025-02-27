@@ -21,7 +21,7 @@ const setImgUrl = (
   arr: TImageDetail[],
   data: (TImageDetail & { fileUrl: string })[] = [],
 ) => {
-  const cloneList = AppUtils.deepCloneData(arr);
+  const cloneList = AppUtils.deepCloneData(arr) as TImageDetail[];
   data = cloneList.map((item) => {
     return {
       ...item,
