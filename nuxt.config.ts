@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "nuxt-icons",
     "@nuxtjs/i18n",
     "@nuxt/image",
+    "@nuxtjs/supabase",
   ],
   eslint: {
     // options here
@@ -43,6 +44,8 @@ export default defineNuxtConfig({
     public: {
       baseURL: process.env.BASE_URL || "https://api.themoviedb.org/3",
       tmdbApiKey: process.env.TMDB_API_KEY || "",
+      supaBaseUrl: process.env.SUPABASE_URL || "https://kuqrirlvnhfdtkquhelx.supabase.co",
+      supaBaseKey:process.env.SUPABASE_KEY || ""
     },
   },
   i18n: {
