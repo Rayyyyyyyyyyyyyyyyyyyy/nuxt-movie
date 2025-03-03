@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import {MovieStore} from "~/stores/movieStore";
-import {TvStore} from "~/stores/tvStore";
-// import { createClient } from '@supabase/supabase-js'
-// import {useRuntimeConfig} from "#imports";
-// const config = useRuntimeConfig();
+import { MovieStore } from "~/stores/movieStore";
+import { TvStore } from "~/stores/tvStore";
 
 const movieStore = MovieStore();
 const tvStore = TvStore();
@@ -12,9 +9,9 @@ onMounted(() => {
   movieStore.getNowPlayingList(1);
   tvStore.getPopularList(1);
 });
-const router = useRouter()
+const router = useRouter();
 
-const {t} = useI18n()
+const { t } = useI18n();
 
 const imageClickFun = (itemID: string) => {
   router.push(`/movie/${itemID}`);
@@ -22,29 +19,23 @@ const imageClickFun = (itemID: string) => {
 const tvImageClickFun = (itemId: string) => {
   router.push(`/tv/${itemId}`);
 };
-
-//
-// const supabase = createClient(config.public.supaBaseUrl, config.public.supaBaseKey)
-// console.log(
-//     'supabase', supabase
-// )
 </script>
 
 <template>
   <div class="home-page">
     <ScrollComponent
-        :scroll_title="t('Now Playing Movies')"
-        :scroll_list="movieStore.afterSetPlayingList"
-        list_type="now_playing"
-        @imageClickEmit="imageClickFun"
+      :scroll_title="t('Now Playing Movies')"
+      :scroll_list="movieStore.afterSetPlayingList"
+      list_type="now_playing"
+      @imageClickEmit="imageClickFun"
     />
 
     <ScrollComponent
-        :scroll_title="t('Popular TV Shows')"
-        :scroll_list="tvStore.afterSetPopularList"
-        list_type="popular"
-        page_type="tv"
-        @imageClickEmit="tvImageClickFun"
+      :scroll_title="t('Popular TV Shows')"
+      :scroll_list="tvStore.afterSetPopularList"
+      list_type="popular"
+      page_type="tv"
+      @imageClickEmit="tvImageClickFun"
     />
   </div>
 </template>

@@ -1,12 +1,35 @@
 <script setup lang="ts">
-import type { FormInstance } from "element-plus";
+import type { FormInstance, FormRules } from "element-plus";
 
 const loginForm = ref();
 const state = reactive({
   loginForm: {
     email: "",
-    pass: "",
+    password: "",
   },
+  loginRules: {
+    email: [
+      {
+        required: true,
+        message: "Please input email address",
+        trigger: "blur",
+      },
+      {
+        type: "email",
+        message: "Please input correct email address",
+        trigger: ["blur", "change"],
+      },
+    ],
+    password: [
+      {
+        required: true,
+        message: "Please enter your password",
+        trigger: "blur",
+      },
+    ],
+  } as FormRules,
+
+  signVisible: false,
 });
 
 const submitLogin = async (refForm: FormInstance) => {
@@ -27,25 +50,12 @@ const submitLogin = async (refForm: FormInstance) => {
       <el-form
         ref="loginForm"
         :model="state.loginForm"
+        :rules="state.loginRules"
         label-width="110px"
         class="login-form"
       >
         >
-        <el-form-item
-          prop="email"
-          :rules="[
-            {
-              required: true,
-              message: 'Please input email address',
-              trigger: 'blur',
-            },
-            {
-              type: 'email',
-              message: 'Please input correct email address',
-              trigger: ['blur', 'change'],
-            },
-          ]"
-        >
+        <el-form-item prop="email">
           <template #label>
             <p class="label">Email</p>
           </template>
@@ -55,34 +65,42 @@ const submitLogin = async (refForm: FormInstance) => {
             clearable
           />
         </el-form-item>
-        <el-form-item
-          prop="pass"
-          :rules="[
-            {
-              required: true,
-              message: 'Please enter your password',
-              trigger: 'blur',
-            },
-          ]"
-        >
+        <el-form-item prop="password">
           <template #label>
             <p class="label">Password</p>
           </template>
           <el-input
-            v-model="state.loginForm.pass"
+            v-model="state.loginForm.password"
             type="password"
             placeholder="Please input password"
             show-password
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="submitLogin(loginForm)" class="submit-btn">
-            login
-          </el-button></el-form-item
-        >
+          <div class="btn-block">
+            <el-button @click="submitLogin(loginForm)" class="submit-btn">
+              login
+            </el-button>
+
+            <el-button
+              @click="state.signVisible = true"
+              class="text-btn"
+              text
+              plain
+            >
+              sign in
+            </el-button>
+            <el-button class="text-btn" text plain> forgot password </el-button>
+          </div>
+        </el-form-item>
       </el-form>
     </div>
   </div>
+
+  <SignFormDialog
+    :dialog_visible="state.signVisible"
+    @closeSignForm="state.signVisible = false"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -104,8 +122,20 @@ const submitLogin = async (refForm: FormInstance) => {
       .label {
         @apply text-xl text-white;
       }
-      .submit-btn {
-        @apply bg-success border-transparent text-white w-1/2;
+
+      .btn-block {
+        @apply flex items-center w-full;
+
+        .submit-btn {
+          @apply bg-success border-transparent text-white w-1/3;
+        }
+        .text-btn {
+          @apply text-success;
+
+          &:hover {
+            @apply text-white bg-success;
+          }
+        }
       }
     }
   }

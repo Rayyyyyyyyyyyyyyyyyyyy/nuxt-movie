@@ -1,12 +1,8 @@
 <script setup lang="ts">
-
-import {UserStore} from "~/stores/userStore";
-
-const userStore = UserStore()
-const route = useRoute()
+const route = useRoute();
 const showFooter = computed(() => {
-  return route.path !== '/login'
-})
+  return route.path !== "/login";
+});
 </script>
 
 <template>
@@ -18,7 +14,7 @@ const showFooter = computed(() => {
         <slot />
       </div>
 
-      <TheFooter v-if="showFooter"/>
+      <TheFooter v-if="showFooter" />
     </div>
   </div>
 </template>
