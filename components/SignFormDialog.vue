@@ -54,14 +54,17 @@ const submitFun = async (refForm: FormInstance) => {
   if (!refForm) return;
   await refForm.validate(async (valid) => {
     if (valid) {
-      const { success } = await userTableOperations.insertUser({
+      const { success, error } = await userTableOperations.insertUser({
         email: state.signForm.email,
         password: state.signForm.password,
-        userName: state.signForm.username
+        userName: state.signForm.username,
       });
 
       if (success) {
         closeFun(refForm);
+      }
+      if (error) {
+        refForm.resetFields();
       }
     }
   });
