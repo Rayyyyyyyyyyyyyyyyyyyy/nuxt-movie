@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from "element-plus";
+import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import { useSupabase } from "~/stores/supabase";
 
 const { userTableOperations } = useSupabase();
@@ -16,7 +16,6 @@ const emits = defineEmits(["closeSignForm"]);
 
 const state = reactive({
   signForm: {
-    username: "",
     email: "",
     password: "",
   },
@@ -40,13 +39,6 @@ const state = reactive({
         trigger: "blur",
       },
     ],
-    username: [
-      {
-        required: true,
-        message: "Please enter your name",
-        trigger: "blur",
-      },
-    ],
   } as FormRules,
 });
 
@@ -54,17 +46,13 @@ const submitFun = async (refForm: FormInstance) => {
   if (!refForm) return;
   await refForm.validate(async (valid) => {
     if (valid) {
-      const { success, error } = await userTableOperations.insertUser({
+      const result = await userTableOperations.insertUser({
         email: state.signForm.email,
         password: state.signForm.password,
-        userName: state.signForm.username,
       });
-
-      if (success) {
+      if (result.status === "success") {
+        ElMessage.success("註冊成功");
         closeFun(refForm);
-      }
-      if (error) {
-        refForm.resetFields();
       }
     }
   });
@@ -92,9 +80,6 @@ const closeFun = (formEl: FormInstance) => {
         ref="signForm"
         :rules="state.signRules"
       >
-        <el-form-item label="User name" prop="username">
-          <el-input v-model="state.signForm.username" placeholder="Username" />
-        </el-form-item>
         <el-form-item label="Email address" prop="email">
           <el-input
             v-model="state.signForm.email"

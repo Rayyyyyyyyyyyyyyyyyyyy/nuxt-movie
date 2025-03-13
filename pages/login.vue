@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from "element-plus";
+import { useSupabase } from "~/stores/supabase";
+import { useRouter } from "#app";
+
+const router = useRouter();
+const { userTableOperations } = useSupabase();
 
 const loginForm = ref();
 const state = reactive({
@@ -34,9 +39,15 @@ const state = reactive({
 
 const submitLogin = async (refForm: FormInstance) => {
   if (!refForm) return;
-  await refForm.validate((valid, fields) => {
+  await refForm.validate(async (valid, fields) => {
     if (valid) {
-      console.log("submit!");
+      const result = await userTableOperations.loginUser({
+        email: state.loginForm.email,
+        password: state.loginForm.password,
+      });
+      if (result.status === "success") {
+        await router.push("/");
+      }
     } else {
       console.log("error submit!", fields);
     }
@@ -90,7 +101,6 @@ const submitLogin = async (refForm: FormInstance) => {
             >
               sign in
             </el-button>
-            <el-button class="text-btn" text plain> forgot password </el-button>
           </div>
         </el-form-item>
       </el-form>
