@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery } from "h3"; // 根據框架引入相應的函數
+import { defineEventHandler, getQuery, createError } from "h3";
 import { fetchMovieApi } from "~/utils/fetchMovieApi";
 
 export default defineEventHandler(async (event) => {
