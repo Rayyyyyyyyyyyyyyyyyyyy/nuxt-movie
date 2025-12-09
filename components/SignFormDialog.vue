@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
-import { useSupabase } from "~/stores/supabase";
+import { useSupabase } from "~/composables/useSupabase";
 
 const { userTableOperations } = useSupabase();
 
 defineProps({
-  sign_visible: {
+  signVisible: {
     type: Boolean,
     default: false,
   },
@@ -53,6 +53,8 @@ const submitFun = async (refForm: FormInstance) => {
       if (result.status === "success") {
         ElMessage.success("註冊成功");
         closeFun(refForm);
+      } else if (result.message) {
+        ElMessage.error(result.message);
       }
     }
   });
@@ -67,8 +69,8 @@ const closeFun = (formEl: FormInstance) => {
 
 <template>
   <BaseDialog
-    :dialog_visible="sign_visible"
-    dialog_title="sign in"
+    :dialog_visible="signVisible"
+    dialog_title="Sign Up"
     @closeEmit="closeFun(signForm)"
     dialog_width="600"
     @submitEmit="submitFun(signForm)"

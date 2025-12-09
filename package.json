@@ -10,17 +10,18 @@
     "postinstall": "nuxt prepare"
   },
   "overrides": {
-    "vue": "^3.5.6"
+    "vue": "^3.5.25"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@nuxt/image": "npm:@nuxt/image-nightly@latest",
     "@pinia/nuxt": "^0.5.5",
+    "@supabase/supabase-js": "^2.49.1",
     "element-plus": "^2.8.3",
     "nuxt": "^3.13.0",
     "nuxt-aos": "^1.2.5",
     "nuxt-icons": "^3.2.1",
-    "vue": "^3.5.6",
+    "vue": "^3.5.25",
     "vue-router": "^4.4.5",
     "vue-types": "^5.1.3"
   },

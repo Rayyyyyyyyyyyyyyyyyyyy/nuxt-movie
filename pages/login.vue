@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from "element-plus";
-import { useSupabase } from "~/stores/supabase";
-import { useRouter } from "#app";
+import { ElMessage, type FormInstance, type FormRules } from "element-plus";
+import { useSupabase } from "~/composables/useSupabase";
 
 const router = useRouter();
 const { userTableOperations } = useSupabase();
@@ -39,17 +38,18 @@ const state = reactive({
 
 const submitLogin = async (refForm: FormInstance) => {
   if (!refForm) return;
-  await refForm.validate(async (valid, fields) => {
+  await refForm.validate(async (valid) => {
     if (valid) {
       const result = await userTableOperations.loginUser({
         email: state.loginForm.email,
         password: state.loginForm.password,
       });
       if (result.status === "success") {
+        ElMessage.success("登入成功");
         await router.push("/");
+      } else if (result.message) {
+        ElMessage.error(result.message);
       }
-    } else {
-      console.log("error submit!", fields);
     }
   });
 };
@@ -65,7 +65,6 @@ const submitLogin = async (refForm: FormInstance) => {
         label-width="110px"
         class="login-form"
       >
-        >
         <el-form-item prop="email">
           <template #label>
             <p class="label">Email</p>
@@ -99,7 +98,7 @@ const submitLogin = async (refForm: FormInstance) => {
               text
               plain
             >
-              sign in
+              Sign Up
             </el-button>
           </div>
         </el-form-item>
@@ -108,7 +107,7 @@ const submitLogin = async (refForm: FormInstance) => {
   </div>
 
   <SignFormDialog
-    :dialog_visible="state.signVisible"
+    :sign-visible="state.signVisible"
     @closeSignForm="state.signVisible = false"
   />
 </template>
