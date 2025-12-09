@@ -10,13 +10,16 @@ export interface Profile {
   updated_at: string;
 }
 
+export type MediaType = "movie" | "tv" | "person";
+
 export interface Favorite {
   id: string;
   user_id: string;
   media_id: number;
-  media_type: "movie" | "tv";
+  media_type: MediaType;
   title: string;
   poster_path: string | null;
+  profile_path: string | null;
   vote_average: number | null;
   created_at: string;
 }
@@ -79,9 +82,10 @@ export const useUserData = () => {
   // 添加收藏
   const addFavorite = async (item: {
     media_id: number;
-    media_type: "movie" | "tv";
+    media_type: MediaType;
     title: string;
     poster_path?: string;
+    profile_path?: string;
     vote_average?: number;
   }): Promise<{ success: boolean; message?: string }> => {
     if (!currentUser.value) {
@@ -94,6 +98,7 @@ export const useUserData = () => {
       media_type: item.media_type,
       title: item.title,
       poster_path: item.poster_path || null,
+      profile_path: item.profile_path || null,
       vote_average: item.vote_average || null,
     });
 
@@ -107,7 +112,7 @@ export const useUserData = () => {
   };
 
   // 移除收藏
-  const removeFavorite = async (mediaId: number, mediaType: "movie" | "tv"): Promise<{ success: boolean; message?: string }> => {
+  const removeFavorite = async (mediaId: number, mediaType: MediaType): Promise<{ success: boolean; message?: string }> => {
     if (!currentUser.value) {
       return { success: false, message: "請先登入" };
     }
@@ -126,7 +131,7 @@ export const useUserData = () => {
   };
 
   // 檢查是否已收藏
-  const isFavorited = async (mediaId: number, mediaType: "movie" | "tv"): Promise<boolean> => {
+  const isFavorited = async (mediaId: number, mediaType: MediaType): Promise<boolean> => {
     if (!currentUser.value) return false;
 
     const { data } = await supabase
@@ -140,6 +145,26 @@ export const useUserData = () => {
     return !!data;
   };
 
+  // 切換收藏狀態
+  const toggleFavorite = async (item: {
+    media_id: number;
+    media_type: MediaType;
+    title: string;
+    poster_path?: string;
+    profile_path?: string;
+    vote_average?: number;
+  }): Promise<{ success: boolean; isFavorited: boolean; message?: string }> => {
+    const favorited = await isFavorited(item.media_id, item.media_type);
+    
+    if (favorited) {
+      const result = await removeFavorite(item.media_id, item.media_type);
+      return { ...result, isFavorited: false };
+    } else {
+      const result = await addFavorite(item);
+      return { ...result, isFavorited: true };
+    }
+  };
+
   return {
     getProfile,
     updateProfile,
@@ -147,6 +172,7 @@ export const useUserData = () => {
     addFavorite,
     removeFavorite,
     isFavorited,
+    toggleFavorite,
   };
 };
 

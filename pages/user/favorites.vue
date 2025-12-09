@@ -72,6 +72,39 @@ const goToDetail = (item: Favorite) => {
   router.push(`/${item.media_type}/${item.media_id}`);
 };
 
+// 獲取標籤類型
+const getTagType = (mediaType: string) => {
+  switch (mediaType) {
+    case "movie":
+      return "primary";
+    case "tv":
+      return "success";
+    case "person":
+      return "warning";
+    default:
+      return "info";
+  }
+};
+
+// 獲取標籤文字
+const getTagLabel = (mediaType: string) => {
+  switch (mediaType) {
+    case "movie":
+      return "電影";
+    case "tv":
+      return "電視劇";
+    case "person":
+      return "演員";
+    default:
+      return mediaType;
+  }
+};
+
+// 獲取圖片路徑
+const getImagePath = (item: Favorite) => {
+  return item.poster_path || item.profile_path;
+};
+
 onMounted(() => {
   if (isAuthenticated.value) {
     loadFavorites();
@@ -113,6 +146,11 @@ watch(isAuthenticated, (value) => {
           <span>電視劇 ({{ favorites.filter((f) => f.media_type === "tv").length }})</span>
         </template>
       </el-tab-pane>
+      <el-tab-pane label="演員" name="person">
+        <template #label>
+          <span>演員 ({{ favorites.filter((f) => f.media_type === "person").length }})</span>
+        </template>
+      </el-tab-pane>
     </el-tabs>
 
     <!-- 載入中 -->
@@ -138,8 +176,8 @@ watch(isAuthenticated, (value) => {
       >
         <div class="poster-container" @click="goToDetail(item)">
           <NuxtImg
-            v-if="item.poster_path"
-            :src="`${originHref}/proxy${item.poster_path}`"
+            v-if="getImagePath(item)"
+            :src="`${originHref}/proxy${getImagePath(item)}`"
             :alt="item.title"
             format="webp"
             class="poster"
@@ -157,8 +195,8 @@ watch(isAuthenticated, (value) => {
         <div class="card-info">
           <h3 class="title" @click="goToDetail(item)">{{ item.title }}</h3>
           <div class="meta">
-            <el-tag size="small" :type="item.media_type === 'movie' ? 'primary' : 'success'">
-              {{ item.media_type === "movie" ? "電影" : "電視劇" }}
+            <el-tag size="small" :type="getTagType(item.media_type)">
+              {{ getTagLabel(item.media_type) }}
             </el-tag>
             <span v-if="item.vote_average" class="rating">
               ⭐ {{ item.vote_average.toFixed(1) }}

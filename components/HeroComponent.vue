@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
 import type { TMovieDetail } from "~/types/apiType";
+import { ElMessage } from "element-plus";
+import type { MediaType } from "~/composables/useUserData";
 
 const props = defineProps({
   movie_detail: {
@@ -11,10 +13,63 @@ const props = defineProps({
     type: String,
     default: "http://localhost:3000",
   },
+  media_type: {
+    type: String as PropType<"movie" | "tv">,
+    default: "movie",
+  },
 });
+
+const { isAuthenticated } = useAuth();
+const { isFavorited, toggleFavorite } = useUserData();
+const router = useRouter();
+
 const movieDetailRes = props.movie_detail
   ? AppUtils.deepCloneData(props.movie_detail)
   : {};
+
+// 收藏狀態
+const isFavorite = ref(false);
+const isToggling = ref(false);
+
+// 檢查收藏狀態
+const checkFavoriteStatus = async () => {
+  if (isAuthenticated.value && movieDetailRes.id) {
+    isFavorite.value = await isFavorited(movieDetailRes.id, props.media_type);
+  }
+};
+
+// 切換收藏
+const handleToggleFavorite = async () => {
+  if (!isAuthenticated.value) {
+    ElMessage.warning("請先登入");
+    router.push("/login");
+    return;
+  }
+
+  isToggling.value = true;
+  try {
+    const result = await toggleFavorite({
+      media_id: movieDetailRes.id,
+      media_type: props.media_type as MediaType,
+      title: movieDetailRes.title || movieDetailRes.name,
+      poster_path: movieDetailRes.poster_path,
+      vote_average: movieDetailRes.vote_average,
+    });
+
+    if (result.success) {
+      isFavorite.value = result.isFavorited;
+      ElMessage.success(result.isFavorited ? "已加入收藏" : "已取消收藏");
+    } else {
+      ElMessage.error(result.message || "操作失敗");
+    }
+  } finally {
+    isToggling.value = false;
+  }
+};
+
+onMounted(() => {
+  checkFavoriteStatus();
+});
 
 const state = reactive({
   heroH: "",
@@ -55,7 +110,21 @@ onUnmounted(() => {
     </div>
 
     <div class="movie-outline" data-aos="fade-up">
-      <p class="title">{{ movieDetailRes.title || movieDetailRes.name }}</p>
+      <div class="title-row">
+        <p class="title">{{ movieDetailRes.title || movieDetailRes.name }}</p>
+        <el-button
+          :type="isFavorite ? 'warning' : 'default'"
+          :loading="isToggling"
+          circle
+          size="large"
+          class="favorite-btn"
+          @click="handleToggleFavorite"
+        >
+          <template #icon>
+            <span class="favorite-icon">{{ isFavorite ? "★" : "☆" }}</span>
+          </template>
+        </el-button>
+      </div>
       <div class="rate-point">
         <el-rate
           v-if="movieDetailRes.moveRate"
@@ -123,8 +192,20 @@ onUnmounted(() => {
     @apply p-10 h-full w-1/2;
     @apply flex flex-col justify-center items-start;
 
+    .title-row {
+      @apply flex items-center gap-4 w-full;
+    }
+
     .title {
       @apply text-3xl;
+    }
+
+    .favorite-btn {
+      @apply flex-shrink-0;
+
+      .favorite-icon {
+        @apply text-xl;
+      }
     }
     .rate-point {
       @apply flex items-center mb-2;

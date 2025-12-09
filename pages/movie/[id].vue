@@ -36,7 +36,7 @@ cloneDetailData["moveRate"] = Number(movieDetailRes.vote_average.toFixed(1)) / 2
 </script>
 
 <template>
-  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref" />
+  <HeroComponent :movie_detail="cloneDetailData" :origin_href="originHref" media_type="movie" />
 
   <el-tabs v-model="state.activeName" class="tab-content" id="tab_id">
     <el-tab-pane :label="$t('Overview')" name="overView">

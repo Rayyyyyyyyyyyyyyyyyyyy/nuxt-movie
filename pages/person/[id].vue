@@ -12,9 +12,15 @@ import {
 import AppUtils from "~/utils/appUtils";
 import { ELink, showIconLinkList } from "~/consts/AppConst";
 import dayjs from "dayjs";
+import { ElMessage } from "element-plus";
 
 const route = useRoute();
 const personId = route.params.id;
+
+const { isAuthenticated } = useAuth();
+const { isFavorited, toggleFavorite } = useUserData();
+const isFavorite = ref(false);
+const isToggling = ref(false);
 
 const url = useRequestURL();
 const originHref = url.origin;
@@ -96,6 +102,45 @@ const profileList = cloneList.map((item) => {
     fileUrl: `${originHref}/proxy/${item.file_path}`,
   };
 });
+
+// 檢查收藏狀態
+const checkFavoriteStatus = async () => {
+  if (isAuthenticated.value && genreRes.id) {
+    isFavorite.value = await isFavorited(genreRes.id, "person");
+  }
+};
+
+// 切換收藏
+const handleToggleFavorite = async () => {
+  if (!isAuthenticated.value) {
+    ElMessage.warning("請先登入");
+    router.push("/login");
+    return;
+  }
+
+  isToggling.value = true;
+  try {
+    const result = await toggleFavorite({
+      media_id: genreRes.id,
+      media_type: "person",
+      title: genreRes.name,
+      profile_path: genreRes.profile_path,
+    });
+
+    if (result.success) {
+      isFavorite.value = result.isFavorited;
+      ElMessage.success(result.isFavorited ? "已加入收藏" : "已取消收藏");
+    } else {
+      ElMessage.error(result.message || "操作失敗");
+    }
+  } finally {
+    isToggling.value = false;
+  }
+};
+
+onMounted(() => {
+  checkFavoriteStatus();
+});
 </script>
 
 <template>
@@ -110,7 +155,21 @@ const profileList = cloneList.map((item) => {
       </div>
 
       <div class="profile-detail">
-        <p class="name">{{ genreRes.name }}</p>
+        <div class="name-row">
+          <p class="name">{{ genreRes.name }}</p>
+          <el-button
+            :type="isFavorite ? 'warning' : 'default'"
+            :loading="isToggling"
+            circle
+            size="large"
+            class="favorite-btn"
+            @click="handleToggleFavorite"
+          >
+            <template #icon>
+              <span class="favorite-icon">{{ isFavorite ? "★" : "☆" }}</span>
+            </template>
+          </el-button>
+        </div>
         <p class="detail">
           {{ genreRes.biography ? genreRes.biography : $t("(no biography)") }}
         </p>
@@ -237,8 +296,20 @@ const profileList = cloneList.map((item) => {
     .profile-detail {
       @apply flex flex-col w-4/5;
 
-      .name {
-        @apply text-3xl mb-4;
+      .name-row {
+        @apply flex items-center gap-4 mb-4;
+
+        .name {
+          @apply text-3xl m-0;
+        }
+
+        .favorite-btn {
+          @apply flex-shrink-0;
+
+          .favorite-icon {
+            @apply text-xl;
+          }
+        }
       }
       .detail {
         @apply opacity-60 text-sm whitespace-pre-line;
