@@ -30,7 +30,10 @@ export default defineNuxtConfig({
     },
   },
 
-  plugins: [{ src: "~/plugins/aos.client.ts", mode: "client" }], // 注册插件
+  plugins: [
+    { src: "~/plugins/aos.client.ts", mode: "client" },
+    { src: "~/plugins/auth.client.ts", mode: "client" },
+  ],
   css: ["~/assets/styles/tailwind.scss", "aos/dist/aos.css"],
   postcss: {
     plugins: {

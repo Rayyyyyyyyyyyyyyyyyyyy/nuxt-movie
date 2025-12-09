@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
-import { useSupabase } from "~/composables/useSupabase";
 
 const router = useRouter();
-const { userTableOperations } = useSupabase();
+const { login, isAuthenticated } = useAuth();
+
+// 如果已登入，重導向到首頁
+watch(isAuthenticated, (value) => {
+  if (value) {
+    router.push("/");
+  }
+}, { immediate: true });
 
 const loginForm = ref();
 const state = reactive({
@@ -34,21 +40,25 @@ const state = reactive({
   } as FormRules,
 
   signVisible: false,
+  isSubmitting: false,
 });
 
 const submitLogin = async (refForm: FormInstance) => {
-  if (!refForm) return;
+  if (!refForm || state.isSubmitting) return;
+
   await refForm.validate(async (valid) => {
     if (valid) {
-      const result = await userTableOperations.loginUser({
-        email: state.loginForm.email,
-        password: state.loginForm.password,
-      });
-      if (result.status === "success") {
-        ElMessage.success("登入成功");
-        await router.push("/");
-      } else if (result.message) {
-        ElMessage.error(result.message);
+      state.isSubmitting = true;
+      try {
+        const result = await login(state.loginForm.email, state.loginForm.password);
+        if (result.status === "success") {
+          ElMessage.success("登入成功");
+          await router.push("/");
+        } else if (result.message) {
+          ElMessage.error(result.message);
+        }
+      } finally {
+        state.isSubmitting = false;
       }
     }
   });
@@ -88,8 +98,12 @@ const submitLogin = async (refForm: FormInstance) => {
         </el-form-item>
         <el-form-item>
           <div class="btn-block">
-            <el-button @click="submitLogin(loginForm)" class="submit-btn">
-              login
+            <el-button
+              @click="submitLogin(loginForm)"
+              class="submit-btn"
+              :loading="state.isSubmitting"
+            >
+              Login
             </el-button>
 
             <el-button

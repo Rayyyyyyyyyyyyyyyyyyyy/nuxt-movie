@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
-import { useSupabase } from "~/composables/useSupabase";
 
-const { userTableOperations } = useSupabase();
+const { signUp } = useAuth();
 
 defineProps({
   signVisible: {
@@ -42,19 +41,24 @@ const state = reactive({
   } as FormRules,
 });
 
+const isSubmitting = ref(false);
+
 const submitFun = async (refForm: FormInstance) => {
-  if (!refForm) return;
+  if (!refForm || isSubmitting.value) return;
+
   await refForm.validate(async (valid) => {
     if (valid) {
-      const result = await userTableOperations.insertUser({
-        email: state.signForm.email,
-        password: state.signForm.password,
-      });
-      if (result.status === "success") {
-        ElMessage.success("註冊成功");
-        closeFun(refForm);
-      } else if (result.message) {
-        ElMessage.error(result.message);
+      isSubmitting.value = true;
+      try {
+        const result = await signUp(state.signForm.email, state.signForm.password);
+        if (result.status === "success") {
+          ElMessage.success("註冊成功，請查看您的 Email 進行驗證");
+          closeFun(refForm);
+        } else if (result.message) {
+          ElMessage.error(result.message);
+        }
+      } finally {
+        isSubmitting.value = false;
       }
     }
   });
