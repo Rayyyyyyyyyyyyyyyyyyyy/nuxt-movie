@@ -1,12 +1,23 @@
 <script setup lang="ts">
+interface ScrollItem {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path?: string;
+  profile_path?: string;
+  vote_average?: number;
+  moveRate?: number;
+  nickName?: string;
+}
+
 const props = defineProps({
   scroll_title: {
     type: String,
     default: "",
   },
   scroll_list: {
-    type: Array,
-    default: [],
+    type: Array as PropType<ScrollItem[]>,
+    default: () => [],
   },
   show_more: {
     type: Boolean,
@@ -43,7 +54,7 @@ const onMoreClick = () => {
   router.push(`/${props.page_type}/category/${props.list_type}`);
 };
 
-const imgUrl = (item) => {
+const imgUrl = (item: ScrollItem) => {
   if (props.page_type === "actor") {
     return `${originHref}/proxy${item.profile_path}`;
   } else {

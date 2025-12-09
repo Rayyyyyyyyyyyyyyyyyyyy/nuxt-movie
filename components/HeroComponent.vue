@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import AppUtils from "~/utils/appUtils";
-import { TMovieDetail } from "~/types/apiType";
+import type { TMovieDetail } from "~/types/apiType";
 
 const props = defineProps({
   movie_detail: {
-    type: Object,
-    default: {},
+    type: Object as PropType<TMovieDetail>,
+    default: () => ({}),
   },
   origin_href: {
     type: String,
@@ -36,6 +36,10 @@ onMounted(() => {
   setTimeout(() => {
     window.addEventListener("resize", getScreenW);
   }, 300);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", getScreenW);
 });
 </script>
 

@@ -11,7 +11,7 @@ import {
 } from "~/types/apiType";
 import dayjs from "dayjs";
 import { useRuntimeConfig } from "#imports";
-import { getTMDBApi } from "~/path/to/api";
+import { getTMDBApi } from "~/composables/useTMDBApi";
 import { ELink, showIconLinkList } from "~/consts/AppConst";
 
 const props = defineProps({

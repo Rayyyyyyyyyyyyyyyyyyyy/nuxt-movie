@@ -1,5 +1,5 @@
 {
-    "i18n-ally.localesPaths": [
-        "internationalization"
-    ]
+  "css.customData": [".vscode/tailwind.json"],
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore"
 }
