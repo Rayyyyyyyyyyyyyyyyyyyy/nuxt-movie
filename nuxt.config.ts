@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: false },
   pinia: {
-    storesDirs: ["./stores/**", "./custom-folder/stores/**"],
+    storesDirs: ["./stores/**"],
   },
   modules: [
     "@pinia/nuxt",
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     // options here
   },
   image: {
-    domains: ["http://localhost:3000"],
+    domains: ["localhost", "image.tmdb.org"],
   },
 
   nitro: {

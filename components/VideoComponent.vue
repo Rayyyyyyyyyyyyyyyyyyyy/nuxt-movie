@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getTMDBApi } from "~/path/to/api";
+import { getTMDBApi } from "~/composables/useTMDBApi";
 import { TMovieDetail, TMovieListRes, TRecommendItem } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 

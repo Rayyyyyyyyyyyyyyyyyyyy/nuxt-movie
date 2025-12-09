@@ -4,7 +4,7 @@ import AppUtils from "~/utils/appUtils";
 const props = defineProps({
   movie_detail: {
     type: Object,
-    default: {},
+    default: () => ({}),
   },
   item_type: {
     type: String,

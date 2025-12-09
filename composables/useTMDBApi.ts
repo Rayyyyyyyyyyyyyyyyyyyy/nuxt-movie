@@ -6,7 +6,7 @@ const promiseCache = new LRUCache<string, any>({
   ttl: 2000 * 60 * 60, // 2 小時
 });
 
-export async function _getTMDBApi(url: string, params: any): Promise<any> {
+export async function _getTMDBApi(url: string, params: Record<string, any> = {}): Promise<any> {
   const nuxtApp = useNuxtApp();
 
   // 確保語言參數存在
@@ -21,7 +21,7 @@ export async function _getTMDBApi(url: string, params: any): Promise<any> {
   });
 }
 
-export function getTMDBApi(url: string, params: any): Promise<any> {
+export function getTMDBApi(url: string, params: Record<string, any> = {}): Promise<any> {
   const hash = ohash([url, params]);
   const state = useState<any>(hash, () => null);
 
@@ -45,3 +45,4 @@ export function getTMDBApi(url: string, params: any): Promise<any> {
 
   return promiseCache.get(hash)!; // 返回緩存的 Promise
 }
+

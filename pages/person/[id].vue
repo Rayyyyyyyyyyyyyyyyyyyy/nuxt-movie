@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { getTMDBApi } from "~/path/to/api";
+import { getTMDBApi } from "~/composables/useTMDBApi";
 import { EApiPaths } from "~/consts/apiConst";
 import {
-  TExternal,
-  TOption,
-  TPersonCastITem,
-  TPersonCrewITem,
-  TPersonnel,
-  TProfileITem,
+  type TExternal,
+  type TOption,
+  type TPersonCastITem,
+  type TPersonCrewITem,
+  type TPersonnel,
+  type TProfileITem,
 } from "~/types/apiType";
 import AppUtils from "~/utils/appUtils";
 import { ELink, showIconLinkList } from "~/consts/AppConst";
