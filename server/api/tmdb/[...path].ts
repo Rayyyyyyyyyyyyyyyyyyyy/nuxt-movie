@@ -1,5 +1,4 @@
 import { defineEventHandler, getQuery, createError } from "h3";
-import { fetchMovieApi } from "~/server/utils/fetchMovieApi";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
