@@ -8,6 +8,7 @@ const promiseCache = new LRUCache<string, any>({
 
 export async function _getTMDBApi(url: string, params: Record<string, any> = {}): Promise<any> {
   const nuxtApp = useNuxtApp();
+  const config = useRuntimeConfig();
 
   // 確保語言參數存在
   if (params.language == null) {
@@ -15,9 +16,13 @@ export async function _getTMDBApi(url: string, params: Record<string, any> = {})
     params.language = unref(locale);
   }
 
-  // 調用 `/api/movie` 路由來進行 API 請求
-  return await $fetch(`/api/tmdb/${url}`, {
-    params,
+  // SPA 模式：直接調用 TMDB API
+  return await $fetch(url, {
+    baseURL: config.public.baseURL,
+    params: {
+      api_key: config.public.tmdbApiKey,
+      ...params,
+    },
   });
 }
 
