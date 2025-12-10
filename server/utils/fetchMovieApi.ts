@@ -1,5 +1,3 @@
-// server/utils/fetchMovieApi.ts
-
 import { useRuntimeConfig, createError } from "#imports";
 
 export async function fetchMovieApi(path: string, query: any) {
